@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -175,6 +176,15 @@ namespace MyHR
         /// </summary>
         public WindowViewModel(Window window, PropertyChangeModel propertyChangeModel)
         {
+            using (EntityContext context = new EntityContext("ConnectionToDB"))
+            {
+                context.Positions.Load();
+                context.Vacancies.Load();
+                context.Сandidates.Load();
+                context.СandidateFormes.Load();
+                context.Orders.Load();
+
+            }
             mPropertyChangeModel = propertyChangeModel;
             mPropertyChangeModel.ValueChanged += PropertyChangeModelValueChanged;
             mPropertyChangeModel.ClosePageIvent += PropertyChangeModelClosePage;
@@ -234,7 +244,9 @@ namespace MyHR
             {
                 CurrentPage = OpenPageListViewModel.GetNextPage(CurrentPage);
                 if(OpenPageListViewModel.ItemPages.Count != 1)
-                ChangeCurrPage = false;
+                {
+                    ChangeCurrPage = false;
+                }
             }
 
             OpenPageListViewModel.RemovePageFromList(mCurrentPage, CurrentPage);
@@ -258,6 +270,7 @@ namespace MyHR
                                 PrevPage = CurrentPage;
                                 CurrentPage = new PositionPage(mPropertyChangeModel);
                                 OpenPageListViewModel.AddPageToList(new OpenPageItemControl("Должности", CurrentPage, NextPage, mPropertyChangeModel));
+                                OpenPageListViewModel.RebuildLinks(CurrentPage);
                             }
                                 else
                                 {
@@ -276,6 +289,7 @@ namespace MyHR
                                 PrevPage = CurrentPage;
                                 CurrentPage = new SelectPositionPage(mPropertyChangeModel);
                                 OpenPageListViewModel.AddPageToList(new OpenPageItemControl("Должности", CurrentPage, NextPage, mPropertyChangeModel));
+                                OpenPageListViewModel.RebuildLinks(CurrentPage);
                             }
                             else
                             {
@@ -293,6 +307,7 @@ namespace MyHR
                                 PrevPage = CurrentPage;
                                 CurrentPage = new VacancyPage(mPropertyChangeModel);
                                 OpenPageListViewModel.AddPageToList(new OpenPageItemControl("Вакансии", CurrentPage, NextPage, mPropertyChangeModel));
+                                OpenPageListViewModel.RebuildLinks(CurrentPage);
                             }
                                 else
                                 {
@@ -310,6 +325,7 @@ namespace MyHR
                                 PrevPage = CurrentPage;
                                 CurrentPage = new SelectVacancyPage(mPropertyChangeModel);
                                 OpenPageListViewModel.AddPageToList(new OpenPageItemControl("Вакансии", CurrentPage, NextPage, mPropertyChangeModel));
+                                OpenPageListViewModel.RebuildLinks(CurrentPage);
                             }
                             else
                             {
@@ -326,7 +342,8 @@ namespace MyHR
                                 var NextPage = CurrentPage;
                                 PrevPage = CurrentPage;
                                 CurrentPage = new СandidatePage(mPropertyChangeModel);
-                                OpenPageListViewModel.AddPageToList(new OpenPageItemControl("Кандидаты", CurrentPage, NextPage, mPropertyChangeModel));
+                                OpenPageListViewModel.AddPageToList(new OpenPageItemControl("Соискатели", CurrentPage, NextPage, mPropertyChangeModel));
+                                OpenPageListViewModel.RebuildLinks(CurrentPage);
                             }
                                 else
                                 {
@@ -336,7 +353,65 @@ namespace MyHR
                             }
                                 break;
                             }
-                        case ApplicationMenuControl.Order:
+
+                    case ApplicationMenuControl.SelectCandidate:
+                        {
+                            if (OpenPageListViewModel.NotFindPage(typeof(SelectСandidatePage)))
+                            {
+                                var NextPage = CurrentPage;
+                                PrevPage = CurrentPage;
+                                CurrentPage = new SelectСandidatePage(mPropertyChangeModel);
+                                OpenPageListViewModel.AddPageToList(new OpenPageItemControl("Соискатели", CurrentPage, NextPage, mPropertyChangeModel));
+                                OpenPageListViewModel.RebuildLinks(CurrentPage);
+                            }
+                            else
+                            {
+                                var cPG = OpenPageListViewModel.GetOpendPage(typeof(SelectСandidatePage));
+                                if (!CurrentPage.Equals(cPG))
+                                { CurrentPage = cPG; OpenPageListViewModel.SetCurrentPageAvailable(CurrentPage); }
+                            }
+                            break;
+                        }
+
+                    case ApplicationMenuControl.СandidateForm:
+                        {
+                            if (OpenPageListViewModel.NotFindPage(typeof(СandidateFormPage)))
+                            {
+                                var NextPage = CurrentPage;
+                                PrevPage = CurrentPage;
+                                CurrentPage = new СandidateFormPage(mPropertyChangeModel);
+                                OpenPageListViewModel.AddPageToList(new OpenPageItemControl("Анкеты", CurrentPage, NextPage, mPropertyChangeModel));
+                                OpenPageListViewModel.RebuildLinks(CurrentPage);
+                            }
+                            else
+                            {
+                                var cPG = OpenPageListViewModel.GetOpendPage(typeof(СandidateFormPage));
+                                if (!CurrentPage.Equals(cPG))
+                                { CurrentPage = cPG; OpenPageListViewModel.SetCurrentPageAvailable(CurrentPage); }
+                            }
+                            break;
+                        }
+
+                    case ApplicationMenuControl.SelectedСandidateForm:
+                        {
+                            if (OpenPageListViewModel.NotFindPage(typeof(SelectСandidateFormPage)))
+                            {
+                                var NextPage = CurrentPage;
+                                PrevPage = CurrentPage;
+                                CurrentPage = new SelectСandidateFormPage(mPropertyChangeModel);
+                                OpenPageListViewModel.AddPageToList(new OpenPageItemControl("Анкеты", CurrentPage, NextPage, mPropertyChangeModel));
+                                OpenPageListViewModel.RebuildLinks(CurrentPage);
+                            }
+                            else
+                            {
+                                var cPG = OpenPageListViewModel.GetOpendPage(typeof(SelectСandidateFormPage));
+                                if (!CurrentPage.Equals(cPG))
+                                { CurrentPage = cPG; OpenPageListViewModel.SetCurrentPageAvailable(CurrentPage); }
+                            }
+                            break;
+                        }
+
+                    case ApplicationMenuControl.Order:
                             {
                                 if (OpenPageListViewModel.NotFindPage(typeof(OrderPage)))
                                 {
@@ -344,6 +419,7 @@ namespace MyHR
                                 PrevPage = CurrentPage;
                                 CurrentPage = new OrderPage(mPropertyChangeModel);
                                 OpenPageListViewModel.AddPageToList(new OpenPageItemControl("Заявки", CurrentPage, NextPage, mPropertyChangeModel));
+                                OpenPageListViewModel.RebuildLinks(CurrentPage);
                             }
                                 else
                                 {
@@ -353,7 +429,26 @@ namespace MyHR
                             }
                                 break;
                             }
-                        case ApplicationMenuControl.NewPosition:
+                    case ApplicationMenuControl.NewOrder:
+                        {
+                            if (OpenPageListViewModel.NotFindPage(typeof(NewOrderPage)))
+                            {
+                                var NextPage = CurrentPage;
+                                PrevPage = CurrentPage;
+                                CurrentPage = new NewOrderPage(mPropertyChangeModel, (ApplicationPageCommands)newValue, (Order)senderedValue);
+                                OpenPageListViewModel.AddPageToList(new OpenPageItemControl("Заявка", CurrentPage, NextPage, mPropertyChangeModel));
+                                OpenPageListViewModel.RebuildLinks(CurrentPage);
+                            }
+                            else
+                            {
+                                var cPG = OpenPageListViewModel.GetOpendPage(typeof(NewOrderPage));
+                                if (!CurrentPage.Equals(cPG))
+                                { CurrentPage = cPG; OpenPageListViewModel.SetCurrentPageAvailable(CurrentPage); }
+                            }
+                            break;
+                        }
+
+                    case ApplicationMenuControl.NewPosition:
                             {
                                 if (OpenPageListViewModel.NotFindPage(typeof(NewPositionPage)))
                                 {
@@ -361,6 +456,7 @@ namespace MyHR
                                 PrevPage = CurrentPage;
                                 CurrentPage = new NewPositionPage(mPropertyChangeModel, (ApplicationPageCommands)newValue, (Position)senderedValue);
                                 OpenPageListViewModel.AddPageToList(new OpenPageItemControl("Должность", CurrentPage, NextPage, mPropertyChangeModel));
+                                OpenPageListViewModel.RebuildLinks(CurrentPage);
                             }
                                 else
                                 {
@@ -378,6 +474,7 @@ namespace MyHR
                                 PrevPage = CurrentPage;
                                 CurrentPage = new NewVacancyPage(mPropertyChangeModel, (ApplicationPageCommands)newValue, (Vacancy)senderedValue);
                                 OpenPageListViewModel.AddPageToList(new OpenPageItemControl("Вакансия", CurrentPage, NextPage, mPropertyChangeModel));
+                                OpenPageListViewModel.RebuildLinks(CurrentPage);
                             }
                                 else
                                 {
@@ -394,7 +491,8 @@ namespace MyHR
                                 var NextPage = CurrentPage;
                                 PrevPage = CurrentPage;
                                 CurrentPage = new NewСandidatePage(mPropertyChangeModel, (ApplicationPageCommands)newValue, (Сandidate)senderedValue);
-                                OpenPageListViewModel.AddPageToList(new OpenPageItemControl("Кандидат", CurrentPage, NextPage, mPropertyChangeModel));
+                                OpenPageListViewModel.AddPageToList(new OpenPageItemControl("Соискатель", CurrentPage, NextPage, mPropertyChangeModel));
+                                OpenPageListViewModel.RebuildLinks(CurrentPage);
                             }
                                 else
                                 {
@@ -404,7 +502,26 @@ namespace MyHR
                             }
                                 break;
                             }
-                        default:
+
+                        case ApplicationMenuControl.NewСandidateForm:
+                            {
+                                if (OpenPageListViewModel.NotFindPage(typeof(NewСandidateFormPage)))
+                                {
+                                    var NextPage = CurrentPage;
+                                    PrevPage = CurrentPage;
+                                    CurrentPage = new NewСandidateFormPage(mPropertyChangeModel, (ApplicationPageCommands)newValue, (СandidateForm)senderedValue);
+                                    OpenPageListViewModel.AddPageToList(new OpenPageItemControl("Анкета", CurrentPage, NextPage, mPropertyChangeModel));
+                                    OpenPageListViewModel.RebuildLinks(CurrentPage);
+                            }
+                                else
+                                {
+                                    var cPG = OpenPageListViewModel.GetOpendPage(typeof(NewСandidateFormPage));
+                                    if (!CurrentPage.Equals(cPG))
+                                    { CurrentPage = cPG; OpenPageListViewModel.SetCurrentPageAvailable(CurrentPage); }
+                                }
+                                break;
+                            }
+                    default:
                             break;
                     }
             }

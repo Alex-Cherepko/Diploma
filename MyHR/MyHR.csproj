@@ -81,6 +81,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BDModels\Orders_CandidateForm.cs" />
+    <Compile Include="BDModels\Order_Vacancy.cs" />
+    <Compile Include="BDModels\СandidateForm.cs" />
     <Compile Include="Controls\AdaptationPanel.xaml.cs">
       <DependentUpon>AdaptationPanel.xaml</DependentUpon>
     </Compile>
@@ -105,6 +108,9 @@
     <Compile Include="BDModels\Position.cs" />
     <Compile Include="BDModels\Vacancy.cs" />
     <Compile Include="BDModels\Сandidate.cs" />
+    <Compile Include="Pages\Order\NewOrderPage.xaml.cs">
+      <DependentUpon>NewOrderPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Position\NewPositionPage.xaml.cs">
       <DependentUpon>NewPositionPage.xaml</DependentUpon>
     </Compile>
@@ -119,6 +125,15 @@
     </Compile>
     <Compile Include="Pages\Vacancy\SelectVacancyPage.xaml.cs">
       <DependentUpon>SelectVacancyPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\СandidateForm\NewСandidateFormPage.xaml.cs">
+      <DependentUpon>NewСandidateFormPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\СandidateForm\SelectСandidateFormPage.xaml.cs">
+      <DependentUpon>SelectСandidateFormPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\СandidateForm\СandidateFormPage.xaml.cs">
+      <DependentUpon>СandidateFormPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Сandidate\NewСandidatePage.xaml.cs">
       <DependentUpon>NewСandidatePage.xaml</DependentUpon>
@@ -135,6 +150,9 @@
     <Compile Include="Pages\Position\PositionPage.xaml.cs">
       <DependentUpon>PositionPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ValueConverters\ApplicatoinUserControlValueConverter.cs" />
     <Compile Include="ValueConverters\Base\BaseValueConverter.cs" />
     <Compile Include="ValueConverters\BooleanToVisiblityConverter.cs" />
@@ -142,11 +160,18 @@
     <Compile Include="VeiwModel\Base\PropertyChangeModel.cs" />
     <Compile Include="VeiwModel\Base\RelayCommand.cs" />
     <Compile Include="VeiwModel\Base\RelayParameterizedCommand.cs" />
+    <Compile Include="VeiwModel\MainWindow\SettingsWindowViewModel.cs" />
+    <Compile Include="VeiwModel\Order\NewOrderPageViewModel.cs" />
     <Compile Include="VeiwModel\Order\OrderPageViewModel.cs" />
+    <Compile Include="VeiwModel\Order\OrderStatusViewModel.cs" />
     <Compile Include="VeiwModel\Page\OpenPageItemViewModel.cs" />
     <Compile Include="VeiwModel\Page\OpenPageListViewModel.cs" />
     <Compile Include="VeiwModel\Position\NewPositionPageViewModel.cs" />
     <Compile Include="VeiwModel\Vacancy\NewVacancyPageViewModel.cs" />
+    <Compile Include="VeiwModel\СandidateForm\CondidateFormStatusViewModel.cs" />
+    <Compile Include="VeiwModel\СandidateForm\NewСandidateFormPageViewModel.cs" />
+    <Compile Include="VeiwModel\СandidateForm\СandidateFormPageViewModel.cs" />
+    <Compile Include="VeiwModel\Сandidate\CandidateStatusViewModel.cs" />
     <Compile Include="VeiwModel\Сandidate\NewСandidatePageViewModel.cs" />
     <Compile Include="VeiwModel\Сandidate\СandidatePageViewModel.cs" />
     <Compile Include="VeiwModel\Vacancy\VacancyPageViewModel.cs" />
@@ -182,6 +207,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Pages\Order\NewOrderPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Pages\Position\NewPositionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -202,6 +231,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Pages\СandidateForm\NewСandidateFormPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\СandidateForm\SelectСandidateFormPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\СandidateForm\СandidateFormPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Pages\Сandidate\NewСandidatePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -219,6 +260,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\Position\PositionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

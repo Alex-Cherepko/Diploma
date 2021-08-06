@@ -12,8 +12,8 @@
 
     <Grid Background="WhiteSmoke">
         <Grid.RowDefinitions>
-            <RowDefinition Height="25"/>
-            <RowDefinition Height="25"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
@@ -26,12 +26,12 @@
             <ColumnDefinition Width="0.5*"/>
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Row="0" Grid.ColumnSpan="4" BorderThickness="0" Background="{StaticResource BlueColorBrush}">
+        <Border Grid.Row="0" Grid.ColumnSpan="4" BorderThickness="0" Background="{StaticResource LightBlueColorBrush}">
 
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
-                    <ColumnDefinition Width="25"/>
+                    <ColumnDefinition Width="35"/>
                 </Grid.ColumnDefinitions>
 
                 <TextBlock HorizontalAlignment="Left" FontFamily="{StaticResource LatoBold}" FontSize="{StaticResource FontSizeRegular}" Text="{Binding Title}"></TextBlock>
@@ -40,7 +40,7 @@
             </Grid>
         </Border>
 
-        <StackPanel Grid.Row="1" Grid.ColumnSpan="4" Orientation="Horizontal" Background="{StaticResource BlueColorBrush}">
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="4" Orientation="Horizontal" Background="{StaticResource LightBlueColorBrush}">
 
             <Button Style="{StaticResource ListButton}" 
                     Content="OK" 
@@ -61,12 +61,13 @@
                        Margin="10,20,5,10"/>
 
         <TextBox Grid.Column="3" Grid.Row="2"
-                     Height="25" 
-                     Padding="1"
-                     FontSize="{StaticResource FontSizeSmall}" 
-                     FontFamily="{StaticResource LatoRegular}"
-                     Margin="10,20,5,10"
-                     Text="{Binding СandidateId}"/>
+                 Height="25" 
+                 Padding="1"
+                 FontSize="{StaticResource FontSizeSmall}" 
+                 FontFamily="{StaticResource LatoRegular}"
+                 Margin="10,20,5,10"
+                 IsReadOnly="True"
+                 Text="{Binding СandidateId}"/>
 
         <TextBlock Grid.Column="0" Grid.Row="2" 
                        Text="Наименование:" 
@@ -109,12 +110,13 @@
                        Margin="10,10,5,10"/>
 
                 <TextBox Grid.Column="1" 
-                     Height="25" 
+                         Height="25" 
                          Padding="1"
                          FontSize="{StaticResource FontSizeSmall}" 
-                       FontFamily="{StaticResource LatoRegular}"
-                     Margin="10,10,5,10"
-                     Text="{Binding Surname}"/>
+                         FontFamily="{StaticResource LatoRegular}"
+                         Margin="10,10,5,10"
+                         IsReadOnly="True"
+                         Text="{Binding Surname}"/>
 
                 <TextBlock Grid.Column="2" 
                        Text="Имя:" 
@@ -124,61 +126,49 @@
                        Margin="10,10,5,10"/>
 
                 <TextBox Grid.Column="3" 
-                     Height="25"
+                         Height="25"
                          Padding="1"
                          FontSize="{StaticResource FontSizeSmall}" 
-                       FontFamily="{StaticResource LatoRegular}"
-                     Margin="10,10,5,10"
-                     Text="{Binding Name}"/>
+                         FontFamily="{StaticResource LatoRegular}"
+                         Margin="10,10,5,10"
+                         IsReadOnly="True"
+                         Text="{Binding Name}"/>
                 
                 <TextBlock Grid.Column="4" 
-                       Text="Отчество:" 
-                       Height="25" 
-                       FontSize="{StaticResource FontSizeSmall}" 
-                       FontFamily="{StaticResource LatoRegular}"
-                       Margin="10,10,5,10"/>
+                           Text="Отчество:" 
+                           Height="25" 
+                           FontSize="{StaticResource FontSizeSmall}" 
+                           FontFamily="{StaticResource LatoRegular}"
+                           Margin="10,10,5,10"/>
 
                 <TextBox Grid.Column="5" 
-                     Height="25"
+                         Height="25"
                          Padding="1"
                          FontSize="{StaticResource FontSizeSmall}" 
-                       FontFamily="{StaticResource LatoRegular}"
-                     Margin="10,10,5,10"
-                     Text="{Binding Patronymic}"/>
+                         FontFamily="{StaticResource LatoRegular}"
+                         Margin="10,10,5,10"
+                         IsReadOnly="True"
+                         Text="{Binding Patronymic}"/>
 
             </Grid>
             
         </Border>
 
-        <TextBlock Grid.Column="0" Grid.Row="4" Text="Должность:" 
-                       Padding="1" 
+        <TextBlock Grid.Column="0" Grid.Row="4" Text="Дата рождения:" 
+                       Padding="3" 
                        FontSize="{StaticResource FontSizeSmall}" 
                        FontFamily="{StaticResource LatoRegular}"
-                       Margin="10,20,5,10"
+                       Margin="10,20,5,17"
                        VerticalAlignment="Center"/>
 
-        <Border Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="3"
-                Height="25">
-
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="25"/>
-                </Grid.ColumnDefinitions>
-
-                <TextBox Grid.Column="0"
-                             FontSize="{StaticResource FontSizeSmall}"
-                             Padding="1" 
-                             Margin="10,0,0,0"
-                             Text="{Binding Vacancy.Name}" 
-                             />
-
-                <Button Grid.Column="1"
-                        Content="..."
+        <DatePicker Grid.Column="1" Grid.Row="4"
                         Height="25"
-                        Command="{Binding SelectVacancy}"/>
-            </Grid>
-        </Border>
+                    Width="150"
+                    
+                        SelectedDate="{Binding BrdDate, StringFormat='dd.MM.yyyy', UpdateSourceTrigger=PropertyChanged}" Margin="10,14,212,11">
+
+
+        </DatePicker>
         <TextBlock Grid.Column="0" Grid.Row="5" Text="Описание:" 
                        FontSize="{StaticResource FontSizeSmall}" 
                        FontFamily="{StaticResource LatoRegular}"

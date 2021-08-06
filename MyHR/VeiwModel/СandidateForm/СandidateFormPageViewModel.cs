@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace MyHR
 {
-    public class СandidatePageViewModel : BaseViewModel
+    public class СandidateFormPageViewModel : BaseViewModel
     {
         #region Private Members
 
@@ -21,9 +21,9 @@ namespace MyHR
 
         #region Public Members
 
-        public List<Сandidate> DataContext { get; set; }
+        public List<СandidateForm> DataContext { get; set; }
 
-        public Сandidate SelectedPosition { get; set; }
+        public СandidateForm SelectedPosition { get; set; }
 
         #endregion
 
@@ -41,13 +41,14 @@ namespace MyHR
 
         public ICommand ClosePage { get; set; }
 
-        public ICommand SelectCandidate { get; set; }
+        public ICommand SelectCandidateForm { get; set; }
+
 
         #endregion
 
         #region Constructor
 
-        public СandidatePageViewModel(PropertyChangeModel PropertyChangeModel)
+        public СandidateFormPageViewModel(PropertyChangeModel PropertyChangeModel)
         {
             mPropertyChangeModel = PropertyChangeModel;
 
@@ -57,12 +58,11 @@ namespace MyHR
             Delete = new RelayCommand(() => DeleteСandidate());
             UpdateList = new RelayCommand(() => UpdateListСandidate());
             ClosePage = new RelayCommand(() => ClosePageСandidate());
-            SelectCandidate = new RelayCommand(() => SelectCandidateCommand());
-
+            SelectCandidateForm = new RelayCommand(() => SelectCandidateFormCommand());
 
             context = new EntityContext("ConnectionToDB");
-            context.Сandidates.Load();
-            DataContext = context.Сandidates.ToList();
+            //context.Сandidates.Load();
+            DataContext = context.СandidateFormes.Include(v => v.Vacancy).Include(c => c.Сandidate).ToList();
             context.Dispose();
         }
 
@@ -73,31 +73,31 @@ namespace MyHR
             try
             {
 
-                Сandidate candidate = context.Сandidates.Where(o => o.СandidateId == SelectedPosition.СandidateId).FirstOrDefault();
-                if (candidate != null)
-                    context.Сandidates.Remove(candidate);
+                СandidateForm candidateForm = context.СandidateFormes.Where(o => o.СandidateFormId == SelectedPosition.СandidateFormId).FirstOrDefault();
+                if (candidateForm != null)
+                    context.СandidateFormes.Remove(candidateForm);
                 context.SaveChanges();
 
-                DataContext = context.Сandidates.ToList();
+                DataContext = context.СandidateFormes.Include(v => v.Vacancy).Include(c => c.Сandidate).ToList();
             }
             catch { MessageBox.Show("Удалить не возможно. Есть ссылки на другие объекты", "Ошибка удаления"); }
 
             context.Dispose();
         }
 
-        private void UpdateListСandidate()
-        {
-            context = new EntityContext("ConnectionToDB");
-
-            context.Сandidates.Load();
-            DataContext = context.Сandidates.ToList();
-            context.Dispose();
-        }
-
-        private void SelectCandidateCommand()
+        private void SelectCandidateFormCommand()
         {
             mPropertyChangeModel.SendValueToOwner(SelectedPosition);
             mPropertyChangeModel.ClosePage(null);
+        }
+
+        private void UpdateListСandidate()
+        {
+            //context.Сandidates.Load();
+            context = new EntityContext("ConnectionToDB");
+
+            DataContext = context.СandidateFormes.Include(v => v.Vacancy).Include(c => c.Сandidate).ToList();
+            context.Dispose();
         }
 
         private void ClosePageСandidate()
@@ -108,18 +108,18 @@ namespace MyHR
         private void CopyСandidate()
         {
             if (SelectedPosition != null)
-                mPropertyChangeModel.SendValue(ApplicationMenuControl.NewСandidate, ApplicationPageCommands.Copy, SelectedPosition);
+                mPropertyChangeModel.SendValue(ApplicationMenuControl.NewСandidateForm, ApplicationPageCommands.Copy, SelectedPosition);
         }
 
         private void EditСandidate()
         {
             if (SelectedPosition != null)
-                mPropertyChangeModel.SendValue(ApplicationMenuControl.NewСandidate, ApplicationPageCommands.Edit, SelectedPosition);
+                mPropertyChangeModel.SendValue(ApplicationMenuControl.NewСandidateForm, ApplicationPageCommands.Edit, SelectedPosition);
         }
 
         private void NewСandidate()
         {
-            mPropertyChangeModel.SendValue(ApplicationMenuControl.NewСandidate, ApplicationPageCommands.New, null);
+            mPropertyChangeModel.SendValue(ApplicationMenuControl.NewСandidateForm, ApplicationPageCommands.New, null);
         }
 
         #endregion

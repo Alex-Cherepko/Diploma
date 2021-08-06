@@ -11,12 +11,16 @@ namespace MyHR
         Position,
         Vacancy,
         Сandidate,
+        СandidateForm,
         Order,
         NewPosition,
         NewVacancy,
         NewСandidate,
         NewOrder,
         SelectPosition,
-        SelectVacancy
+        SelectVacancy,
+        SelectCandidate,
+        SelectedСandidateForm,
+        NewСandidateForm
     }
 }

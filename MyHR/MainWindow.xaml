@@ -161,6 +161,7 @@
                         CommandParameter="{Binding UserControlsList[0]}"/>
             <Button Style="{StaticResource MainSectionButtonStyle}" 
                         Tag="Адаптация" 
+                        Visibility="Hidden"
                         Command="{Binding SectionButtonCommand}"
                         CommandParameter="{Binding UserControlsList[1]}"/>
         </StackPanel>

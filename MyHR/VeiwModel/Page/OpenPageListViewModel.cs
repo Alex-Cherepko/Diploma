@@ -58,6 +58,29 @@ namespace MyHR
                     if (VM.NextPage == null)
                     { VM.NextPage = currPage; }
                     if (VM.NextPage.Equals(deletedPage))
+                    {
+                        VM.NextPage = currPage;
+                         
+                    }
+                    
+                }
+            }
+        }
+
+        public void RebuildLinks(UserControl currPage)
+        {
+
+            if (ItemPages.Count == 1)
+            {
+                var VM = (OpenPageItemViewModel)(ItemPages[0].DataContext);
+                VM.NextPage = null;
+            }
+            else
+            {
+                foreach (var Item in ItemPages)
+                {
+                    var VM = (OpenPageItemViewModel)(Item.DataContext);
+                    if (VM.NextPage == null)
                     { VM.NextPage = currPage; }
                     
                 }
@@ -99,9 +122,11 @@ namespace MyHR
                 var VM = (OpenPageItemViewModel)(Item.DataContext);
                 if (VM.CurrentPage.Equals(Val))
                     return VM.NextPage;
+
+                
             }
 
-            return null;// new UserControl();
+            return null;
         }
 
         public OpenPageItemControl GetPageItemViewModel(UserControl userControl)

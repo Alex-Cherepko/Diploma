@@ -10,6 +10,8 @@ namespace MyHR
     {
         public int PositionId { get; set; }
 
+        public int Code { get; set; }
+
         public string Name { get; set; }
     }
 }

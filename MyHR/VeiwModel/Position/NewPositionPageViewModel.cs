@@ -56,29 +56,34 @@ namespace MyHR
             if (mApplicationPageCommands == ApplicationPageCommands.New)
             {
                 mPosition = new Position();
-                context.Positions.Add(mPosition);
-                context.SaveChanges();
-                PositionId = mPosition.PositionId;
+                PositionId = GetNewCode();
 
             }
             else if(mApplicationPageCommands == ApplicationPageCommands.Edit)
             {
                 Title = "Должность: Создан";
                 mPosition = CurrentPosition;
-                PositionId = mPosition.PositionId;
+                PositionId = mPosition.Code;
                 Name = mPosition.Name;
             }
             else if(mApplicationPageCommands == ApplicationPageCommands.Copy)
             {
                 mPosition = new Position();
                 mPosition.Name = CurrentPosition.Name;
-                context.Positions.Add(mPosition);
-                context.SaveChanges();
-                PositionId = mPosition.PositionId;
+                PositionId = GetNewCode();
                 Name = mPosition.Name;
 
             }
 
+        }
+
+        private int GetNewCode()
+        {
+            if (context.Positions.Count() > 0)
+            {
+                return context.Positions.Max(c => c.Code) + 1;
+            }
+            return 1;
         }
 
         private bool ChecFields()
@@ -101,21 +106,29 @@ namespace MyHR
             if (!ChecFields())
                 return;
 
-            var currVal = context.Positions.Where(c => c.PositionId == PositionId).FirstOrDefault();
-            currVal.PositionId = PositionId;
-            currVal.Name = Name;
+            var currVal = context.Positions.Where(c => c.Code == PositionId).FirstOrDefault();
+            if (currVal == null)
+            {
+
+                mPosition.Code = PositionId;
+                mPosition.Name = Name;
+
+                context.Positions.Add(mPosition);
+
+            }
+            else 
+            {
+                currVal.Code = PositionId;
+                currVal.Name = Name;
+
+            }
 
             context.SaveChanges();
-            context.Dispose();
         }
 
         private void SaveChangesAndClose()
         {
-            var currVal = context.Positions.Where(c => c.PositionId == PositionId).FirstOrDefault();
-            currVal.PositionId = PositionId;
-            currVal.Name = Name;
-
-            context.SaveChanges();
+            SaveChanges();
             context.Dispose();
 
             mPropertyChangeModel.ClosePage(null);

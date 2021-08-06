@@ -6,6 +6,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace MyHR
@@ -36,6 +37,10 @@ namespace MyHR
 
         public ICommand Copy { get; set; }
 
+        public ICommand Delete { get; set; }
+
+        public ICommand UpdateList { get; set; }
+
         public ICommand ClosePage { get; set; }
 
         public ICommand SelectVacancy { get; set; }
@@ -51,12 +56,42 @@ namespace MyHR
             New = new RelayCommand(() => NewVacancy());
             Edit = new RelayCommand(() => EditVacancy());
             Copy = new RelayCommand(() => CopyVacancy());
+            Delete = new RelayCommand(() => DeleteVacancy());
+            UpdateList = new RelayCommand(() => UpdateListVacancy());
             ClosePage = new RelayCommand(() => ClosePageVacancy());
             SelectVacancy = new RelayCommand(() => SelectPositionCommand());
 
             context = new EntityContext("ConnectionToDB");
             context.Vacancies.Load();
             GridDataContext = context.Vacancies.Include(v=>v.Position).ToList();
+            context.Dispose();
+        }
+
+        private void DeleteVacancy()
+        {
+            context = new EntityContext("ConnectionToDB");
+
+            try
+            {
+
+                Vacancy vacancy = context.Vacancies.Where(o => o.VacancyId == SelectedPosition.VacancyId).FirstOrDefault();
+                if (vacancy != null)
+                    context.Vacancies.Remove(vacancy);
+                context.SaveChanges();
+
+                GridDataContext = context.Vacancies.Include(v => v.Position).ToList();
+            }
+            catch { MessageBox.Show("Удалить не возможно. Есть ссылки на другие объекты", "Ошибка удаления"); }
+
+            context.Dispose();
+        }
+
+        private void UpdateListVacancy()
+        {
+            context = new EntityContext("ConnectionToDB");
+
+            context.Vacancies.Load();
+            GridDataContext = context.Vacancies.Include(v => v.Position).ToList();
             context.Dispose();
         }
 

@@ -11,6 +11,7 @@ namespace MyHR
         public MainWindow()
         {
             InitializeComponent();
+
             DataContext = new WindowViewModel(this, modelPropertyChange);
         }
     }

@@ -36,7 +36,9 @@ namespace MyHR
 
         public string Description { get; set; }
 
-        public Vacancy Vacancy { get; set; }
+        public DateTime BrdDate { get; set; }
+
+       // public Vacancy Vacancy { get; set; }
 
         
 
@@ -50,7 +52,7 @@ namespace MyHR
 
         public ICommand ClosePage { get; set; }
 
-        public ICommand SelectVacancy { get; set; }
+        //public ICommand SelectVacancy { get; set; }
 
         public ICommand FindUploadCommand { get; set; }
 
@@ -62,7 +64,7 @@ namespace MyHR
         {
             mPropertyChangeModel = PropertyChangeModel;
 
-            mPropertyChangeModel.SendValueEvent += PropertyChangeModelSendValue;
+            //mPropertyChangeModel.SendValueEvent += PropertyChangeModelSendValue;
             mApplicationPageCommands = applicationPageCommands;
 
             context = new EntityContext("ConnectionToDB");
@@ -70,7 +72,7 @@ namespace MyHR
             CommandOK = new RelayCommand(() => SaveChangesAndClose());
             CommandSave = new RelayCommand(() => SaveChanges());
             ClosePage = new RelayCommand(() => CloseNewPage());
-            SelectVacancy = new RelayCommand(() => SelectVacancyCommand());
+            //SelectVacancy = new RelayCommand(() => SelectVacancyCommand());
             FindUploadCommand = new RelayCommand(()=> EnterInputed());
 
             if (mApplicationPageCommands == ApplicationPageCommands.New)
@@ -83,13 +85,13 @@ namespace MyHR
             {
                 Title = "Кандидат: Создан";
                 mСandidate = CurrentVacancy;
-                СandidateId = mСandidate.СandidateId;
+                СandidateId = mСandidate.Code;
                 FullName = mСandidate.FullName;
                 Name = mСandidate.Name;
                 Surname = mСandidate.Surname;
                 Patronymic = mСandidate.Patronymic;
                 Description = mСandidate.Description;
-                Vacancy = mСandidate.Vacancy;
+                BrdDate = mСandidate.BrdDate;
 
             }
             else if (mApplicationPageCommands == ApplicationPageCommands.Copy)
@@ -101,14 +103,14 @@ namespace MyHR
                 mСandidate.Surname = CurrentVacancy.Surname;
                 mСandidate.Patronymic = CurrentVacancy.Patronymic;
                 mСandidate.Description = CurrentVacancy.Description;
-                mСandidate.Vacancy = CurrentVacancy.Vacancy;
+                mСandidate.BrdDate = CurrentVacancy.BrdDate;
 
                 FullName = mСandidate.FullName;
                 Name = mСandidate.Name;
                 Surname = mСandidate.Surname;
                 Patronymic = mСandidate.Patronymic;
                 Description = mСandidate.Description;
-                Vacancy = mСandidate.Vacancy;
+                BrdDate = mСandidate.BrdDate;
             }
         }
 
@@ -132,15 +134,15 @@ namespace MyHR
         {
             if (context.Сandidates.Count() > 0)
             {
-                return context.Сandidates.Max(c => c.СandidateId) + 1;
+                return context.Сandidates.Max(c => c.Code) + 1;
             }
             return 1;
         }
 
-        private void SelectVacancyCommand()
-        {
-            mPropertyChangeModel.SendValue(ApplicationMenuControl.SelectVacancy, ApplicationMenuControl.SelectVacancy, this);
-        }
+        //private void SelectVacancyCommand()
+        //{
+        //    mPropertyChangeModel.SendValue(ApplicationMenuControl.SelectVacancy, ApplicationMenuControl.SelectVacancy, this);
+        //}
 
         private void CloseNewPage()
         {
@@ -163,28 +165,28 @@ namespace MyHR
             if (!ChecFields())
                 return;
 
-            var currVal = context.Сandidates.Where(c => c.СandidateId == СandidateId).FirstOrDefault();
+            var currVal = context.Сandidates.Where(c => c.Code == СandidateId).FirstOrDefault();
             if (currVal == null)
             {
-                mСandidate.СandidateId = СandidateId;
+                mСandidate.Code = СandidateId;
                 mСandidate.FullName = FullName;
                 mСandidate.Name = Name;
                 mСandidate.Surname = Surname;
                 mСandidate.Patronymic = Patronymic;
                 mСandidate.Description = Description;
-                mСandidate.VacancyId = Vacancy.VacancyId;
+                mСandidate.BrdDate = BrdDate;
 
                 context.Сandidates.Add(mСandidate);
             }
             else
             {
-                currVal.СandidateId = СandidateId;
+                currVal.Code = СandidateId;
                 currVal.FullName = FullName;
                 currVal.Name = Name;
                 currVal.Surname = Surname;
                 currVal.Patronymic = Patronymic;
                 currVal.Description = Description;
-                currVal.VacancyId = Vacancy.VacancyId;
+                currVal.BrdDate = BrdDate;
             }
             context.SaveChanges();
             
@@ -198,13 +200,13 @@ namespace MyHR
             mPropertyChangeModel.ClosePage(null);
         }
 
-        private void PropertyChangeModelSendValue(object sender, object Value)
-        {
-            if (Value is Vacancy)
-            {
-                Vacancy = (Vacancy)Value;
-            }
-        }
+        //private void PropertyChangeModelSendValue(object sender, object Value)
+        //{
+        //    if (Value is Vacancy)
+        //    {
+        //        Vacancy = (Vacancy)Value;
+        //    }
+        //}
 
 
         #endregion

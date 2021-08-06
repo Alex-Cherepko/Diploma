@@ -23,7 +23,7 @@ namespace MyHR
 
         public string Title { get; set; } = "Вакансия: Новый";
 
-        public int VacancyId { get; set; } = 1;
+        public int VacancyId { get; set; }
 
         public string Name { get; set; }
 
@@ -65,16 +65,14 @@ namespace MyHR
             if (mApplicationPageCommands == ApplicationPageCommands.New)
             {
                 mVacancy = new Vacancy();
-                //context.Vacancies.Add(mVacancy);
-                //context.SaveChanges();
-                //VacancyId = mVacancy.VacancyId;
+                VacancyId = GetNewCode();
 
             }
             else if (mApplicationPageCommands == ApplicationPageCommands.Edit)
             {
                 Title = "Вакансия: Создан";
                 mVacancy = CurrentPosition;
-                VacancyId = mVacancy.VacancyId;
+                VacancyId = mVacancy.Code;
                 Name = mVacancy.Name;
                 Description = mVacancy.Description;
                 PositionId = mVacancy.PositionId;
@@ -91,7 +89,7 @@ namespace MyHR
                 mVacancy.PositionId = CurrentPosition.PositionId;
                 mVacancy.Position = CurrentPosition.Position;
 
-                VacancyId = mVacancy.VacancyId;
+                VacancyId = GetNewCode();
                 Name = mVacancy.Name;
                 Description = mVacancy.Description;
                 PositionId = mVacancy.PositionId;
@@ -99,10 +97,20 @@ namespace MyHR
             }
         }
 
-        private Position GetPosition(int positionId)
+        private int GetNewCode()
         {
-            return context.Positions.Where(p => p.PositionId == positionId).FirstOrDefault();
+            if (context.Vacancies.Count() > 0)
+            {
+                return context.Vacancies.Max(c => c.Code) + 1;
+            }
+            return 1;
         }
+
+
+        //private Position GetPosition(int positionId)
+        //{
+        //    return context.Positions.Where(p => p.PositionId == positionId).FirstOrDefault();
+        //}
 
         private void PropertyChangeModelSendValue(object sender, object Value)
         {
@@ -142,10 +150,10 @@ namespace MyHR
             if (!ChecFields())
                 return;
 
-            var currVal = context.Vacancies.Where(c => c.VacancyId == VacancyId).FirstOrDefault();
+            var currVal = context.Vacancies.Where(c => c.Code == VacancyId).FirstOrDefault();
             if(currVal == null)
             {
-                mVacancy.VacancyId = VacancyId;
+                mVacancy.Code = VacancyId;
                 mVacancy.Name = Name;
                 mVacancy.Description = Description;
                 mVacancy.PositionId = Position.PositionId;
@@ -154,10 +162,10 @@ namespace MyHR
             }
             else
             {
-            currVal.VacancyId = VacancyId;
-            currVal.Name = Name;
-            currVal.Description = Description;
-            currVal.PositionId = Position.PositionId;
+                currVal.Code = VacancyId;
+                currVal.Name = Name;
+                currVal.Description = Description;
+                currVal.PositionId = Position.PositionId;
             }
 
 

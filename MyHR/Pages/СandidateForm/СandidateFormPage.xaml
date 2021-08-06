@@ -1,8 +1,8 @@
-﻿<UserControl x:Class="MyHR.VacancyPage"
+﻿<UserControl x:Class="MyHR.СandidateFormPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"       
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MyHR"
       mc:Ignorable="d" 
@@ -17,7 +17,7 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <Border Background="{StaticResource LightBlueColorBrush}">
-                <TextBlock HorizontalAlignment="Center" FontFamily="{StaticResource LatoBold}" FontSize="{StaticResource FontSizeRegular}" Text="Список вакансий"></TextBlock>
+                <TextBlock HorizontalAlignment="Center" FontFamily="{StaticResource LatoBold}" FontSize="{StaticResource FontSizeRegular}" Text="Список анкет"></TextBlock>
             </Border>
             <Border Grid.Row="1"  Background="{StaticResource LightBlueColorBrush}">
                 <Grid>
@@ -39,28 +39,31 @@
                 </Grid>
             </Border>
 
-            <DataGrid Grid.Row="2" 
+            <DataGrid Grid.Row="2"
                       IsReadOnly="True"
                       GridLinesVisibility="None" 
                       HorizontalAlignment="Stretch" 
                       VerticalAlignment="Stretch" 
                       Height="auto"
                       AutoGenerateColumns="False"
-                      ItemsSource="{Binding GridDataContext}"
+                      ItemsSource="{Binding DataContext}"
                       SelectedItem="{Binding SelectedPosition}">
-
+                
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick" >
                         <i:InvokeCommandAction Command="{Binding Edit}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
-
+                
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Код" Binding="{Binding VacancyId}"/>
-                    <DataGridTextColumn Header="Наименование" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Header="Номер" Binding="{Binding СandidateFormId}"/>
+                    <DataGridTextColumn Header="Дата" Binding="{Binding DocDate, StringFormat='dd.MM.yyyy'}"/>
+                    <DataGridTextColumn Header="ФИО" Binding="{Binding Сandidate.FullName}"/>
+                    <DataGridTextColumn Header="Вакансия" Binding="{Binding Vacancy.Name}"/>
+                    <DataGridTextColumn Header="Статус" Binding="{Binding Status}"/>
                     <DataGridTextColumn Header="Описание" Binding="{Binding Description}"/>
-                    <DataGridTextColumn Header="Должность" Binding="{Binding Position.Name}"/>
                 </DataGrid.Columns>
+                
             </DataGrid>
 
         </Grid>

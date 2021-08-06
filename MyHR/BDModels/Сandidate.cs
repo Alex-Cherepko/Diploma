@@ -10,6 +10,8 @@ namespace MyHR
     {
         public int СandidateId { get; set; }
 
+        public int Code { get; set; }
+
         public string FullName { get; set; }
 
         public string Surname { get; set; }
@@ -18,10 +20,11 @@ namespace MyHR
 
         public string Patronymic { get; set; }
 
+        public string Status { get; set; }
+
+        public DateTime BrdDate { get; set; }
+
         public string Description { get; set; }
 
-        public int VacancyId { get; set; }
-
-        public Vacancy Vacancy { get; set; }
     }
 }

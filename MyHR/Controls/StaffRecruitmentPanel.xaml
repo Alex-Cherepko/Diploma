@@ -10,6 +10,19 @@
         <StackPanel Orientation="Horizontal">
 
             <Button Style="{StaticResource SectionButtonStyle}" 
+                    Tag="Заявки"
+                    Command="{Binding OpenOrderCommand}"></Button>
+
+             <Button Style="{StaticResource SectionButtonStyle}" 
+                    Tag="Анкеты"
+                    Command="{Binding OpenCandidateFormCommand}"
+                    ></Button>
+
+            <Button Style="{StaticResource SectionButtonStyle}" 
+                    Tag="Соискатели"
+                    Command="{Binding OpenСandidateCommand}"></Button>
+            
+            <Button Style="{StaticResource SectionButtonStyle}" 
                     Tag="Должности"
                     Command="{Binding OpenPositionCommand}"
                     ></Button>
@@ -18,14 +31,6 @@
                     Tag="Вакансии"
                     Command="{Binding OpenVacancyCommand}"
                     ></Button>
-
-            <Button Style="{StaticResource SectionButtonStyle}" 
-                    Tag="Кандидаты"
-                    Command="{Binding OpenСandidateCommand}"></Button>
-
-            <Button Style="{StaticResource SectionButtonStyle}" 
-                    Tag="Заявки"
-                    Command="{Binding OpenOrderCommand}"></Button>
 
         </StackPanel>
     </Grid>

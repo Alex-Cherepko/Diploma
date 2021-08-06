@@ -25,6 +25,8 @@ namespace MyHR
 
         public ICommand OpenСandidateCommand { get; set; }
 
+        public ICommand OpenCandidateFormCommand { get; set; }
+
         public ICommand OpenOrderCommand { get; set; }
 
         #endregion
@@ -39,6 +41,8 @@ namespace MyHR
             OpenPositionCommand = new RelayCommand(() => OpenPositionList());
             OpenVacancyCommand = new RelayCommand(() => OpenVacancyList());
             OpenСandidateCommand = new RelayCommand(() => OpenСandidateList());
+            OpenCandidateFormCommand = new RelayCommand(() => OpenСandidateFormList());
+
             OpenOrderCommand = new RelayCommand(() => OpenOrderList());
         }
 
@@ -51,6 +55,12 @@ namespace MyHR
         {
             mPropertyChangeModel.SendValue(ApplicationMenuControl.Сandidate, ApplicationMenuControl.Сandidate, null);
         }
+
+        private void OpenСandidateFormList()
+        {
+            mPropertyChangeModel.SendValue(ApplicationMenuControl.СandidateForm, ApplicationMenuControl.СandidateForm, null);
+        }
+
 
         private void OpenVacancyList()
         {

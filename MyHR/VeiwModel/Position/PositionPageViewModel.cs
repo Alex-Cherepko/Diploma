@@ -6,6 +6,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -37,6 +38,10 @@ namespace MyHR
 
         public ICommand Copy { get; set; }
 
+        public ICommand Delete { get; set; }
+
+        public ICommand UpdateList { get; set; }
+
         public ICommand ClosePage { get; set; }
 
         public ICommand SelectPosition { get; set; }
@@ -57,9 +62,39 @@ namespace MyHR
             New = new RelayCommand(() => NewPosition());
             Edit = new RelayCommand(() => EditPosition());
             Copy = new RelayCommand(() => CopyPosition());
+            Delete = new RelayCommand(() => DeletePosition());
+            UpdateList = new RelayCommand(() => UpdateListPosition());
             ClosePage = new RelayCommand(() => ClosePagePosition());
             SelectPosition = new RelayCommand(() => SelectPositionCommand());
 
+            context = new EntityContext("ConnectionToDB");
+            context.Positions.Load();
+            GridDataContext = context.Positions.Local;
+            context.Dispose();
+        }
+
+        private void DeletePosition()
+        {
+            context = new EntityContext("ConnectionToDB");
+
+            try
+            {
+
+                Position position = context.Positions.Where(o => o.PositionId == SelectedPosition.PositionId).FirstOrDefault();
+                if (position != null)
+                    context.Positions.Remove(position);
+                context.SaveChanges();
+
+                GridDataContext = context.Positions.Local;
+            }
+            catch { MessageBox.Show("Удалить не возможно. Есть ссылки на другие объекты", "Ошибка удаления"); }
+
+            context.Dispose();
+
+        }
+
+        private void UpdateListPosition()
+        {
             context = new EntityContext("ConnectionToDB");
             context.Positions.Load();
             GridDataContext = context.Positions.Local;

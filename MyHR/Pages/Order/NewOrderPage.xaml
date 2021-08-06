@@ -1,0 +1,210 @@
+﻿<UserControl x:Class="MyHR.NewOrderPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+      xmlns:prism="clr-namespace:Prism.Events;assembly=Prism"       
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MyHR" 
+             mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      >
+
+    <Grid Background="WhiteSmoke">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <!--<Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="0.15*"/>
+            <ColumnDefinition Width="0.5*"/>
+        </Grid.ColumnDefinitions>-->
+
+        <Border Grid.Row="0" BorderThickness="0" Background="{StaticResource LightBlueColorBrush}">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="35"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock HorizontalAlignment="Left" FontFamily="{StaticResource LatoBold}" FontSize="{StaticResource FontSizeRegular}" Text="{Binding Title}"></TextBlock>
+                <Button Grid.Column="1" 
+                        Style="{StaticResource WindowCloseButton}"
+                        Content="X" 
+                        Command="{Binding ClosePage}"></Button>
+
+            </Grid>
+        </Border>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Background="{StaticResource LightBlueColorBrush}">
+
+            <Button Style="{StaticResource ListButton}" 
+                    Content="OK" 
+                    Width="70"
+                    Command="{Binding CommandOK}"></Button>
+
+            <Button Style="{StaticResource ListButton}" 
+                    Content="Записать" 
+                    Width="70"
+                    Command="{Binding CommandSave}"></Button>
+
+        </StackPanel>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="Номер:" 
+                       Height="25" 
+                       Padding="3"
+                       FontSize="{StaticResource FontSizeSmall}" 
+                       FontFamily="{StaticResource LatoRegular}"
+                       Margin="0,0,0,0"/>
+
+            <TextBox Grid.Column="1" 
+                     Height="25" 
+                     Padding="1"
+                     FontSize="{StaticResource FontSizeSmall}" 
+                     FontFamily="{StaticResource LatoRegular}"
+                     Margin="0,0,0,0"
+                     IsReadOnly="True"
+                     Text="{Binding OrderId}"/>
+
+            <TextBlock Grid.Column="2" Text="Дата:" 
+                       Height="25" 
+                       Padding="3"
+                       FontSize="{StaticResource FontSizeSmall}" 
+                       FontFamily="{StaticResource LatoRegular}"
+                       Margin="10,0,10,0"/>
+
+            <DatePicker Grid.Column="3"
+                        Height="25"
+                        SelectedDate="{Binding DocDate, StringFormat='dd.MM.yyyy', UpdateSourceTrigger=PropertyChanged}">
+
+
+            </DatePicker>
+        </Grid>
+
+        <Grid Grid.Row ="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="Вакансия:" 
+                       Padding="5" 
+                       FontSize="{StaticResource FontSizeSmall}" 
+                       FontFamily="{StaticResource LatoRegular}"
+                       Margin="10,10,5,12"
+                       VerticalAlignment="Center" Height="28"/>
+
+            <Border Grid.Column="1" 
+                Height="25">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="25"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox Grid.Column="0"
+                             FontSize="{StaticResource FontSizeSmall}"
+                             Padding="1" 
+                             Margin="10,0,0,0"
+                             IsReadOnly="True"
+                             Text="{Binding Vacancy.Name}" 
+                             />
+
+                    <Button Grid.Column="1"
+                        Content="..."
+                        Height="25"
+                        Command="{Binding SelectVacancy}"/>
+                </Grid>
+            </Border>
+
+
+        </Grid>
+
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0"  Text="Срок исполнения:" 
+                       FontSize="{StaticResource FontSizeSmall}" 
+                       FontFamily="{StaticResource LatoRegular}"
+                       Margin="10,10,5,7"
+                   VerticalAlignment="Center"/>
+
+            <DatePicker Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Height="25"
+                        SelectedDate="{Binding ExecutionTerm, StringFormat='dd.MM.yyyy',UpdateSourceTrigger=PropertyChanged}">
+                
+            </DatePicker>
+
+            <TextBlock Grid.Column="2"  Text="Статус:" 
+                       FontSize="{StaticResource FontSizeSmall}" 
+                       FontFamily="{StaticResource LatoRegular}"
+                       Margin="10,10,5,7"
+                   VerticalAlignment="Center"/>
+
+            <ComboBox Grid.Column="4"
+                      Height="25"
+                      MaxDropDownHeight="175"
+                      ItemsSource="{Binding OrderList}"
+                      SelectedItem="{Binding Status}"
+                      DisplayMemberPath="Name">
+
+            </ComboBox>
+
+        </Grid>
+
+        <StackPanel Grid.Row="5" Orientation="Horizontal">
+            <!--<Button Style="{StaticResource ListButton}" 
+                    Content="Добавить" 
+                    Width="70"
+                    Margin="0,0,5,0"
+                    Command="{Binding CommandAddNewPow}"></Button>-->
+
+            <Button Style="{StaticResource ListButton}" 
+                    Content="Подобрать" 
+                    Width="70"
+                    Margin="0,0,5,0"
+                    Command="{Binding SelectCanditateForm}"></Button>
+
+
+        </StackPanel>
+        <DataGrid Grid.Row="6"
+                  Background="WhiteSmoke"
+                  Margin="1,5,1,0"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding СandidateFormList}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Анкета" Binding="{Binding Сandidate.FullName}">
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Статус анкеты" IsReadOnly="True" Binding="{Binding Status}"></DataGridTextColumn>
+            </DataGrid.Columns>
+            
+        </DataGrid>
+
+    </Grid>
+
+</UserControl>
