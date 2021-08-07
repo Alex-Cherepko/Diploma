@@ -10,6 +10,8 @@ using System.Xml.Serialization;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using System.Xml.Linq;
+using System.Data.Entity;
 
 namespace MyHR
 {
@@ -27,6 +29,44 @@ namespace MyHR
         {
             AbortChanges = new RelayCommand(() => window.Close());
             AcceptChanges = new RelayCommand(() => RunMainWindow(window));
+
+            if (ConnectionExist())
+            {
+                ShowMainWindow(window);
+            }
+        }
+
+        private void ShowMainWindow(Window window)
+        {
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
+            window.Close();
+        }
+
+        private bool ConnectionExist()
+        {
+            string connectionString = "";
+
+            if (File.Exists("Settings.config"))
+            {
+                XDocument xdoc = XDocument.Load("Settings.config");
+                foreach (XElement Element in xdoc.Element("connectionStrings").Elements("add"))
+                {
+                    XAttribute nameAttribute = Element.Attribute("connectionString");
+                    connectionString = nameAttribute.Value;
+                }
+               
+            }
+            else
+            {
+                return false;
+            }
+            
+            if(Database.Exists(connectionString))
+            {
+                return true;
+            }
+            return false;
         }
 
         private void RunMainWindow(Window window)
@@ -35,22 +75,20 @@ namespace MyHR
 
             if (String.IsNullOrEmpty(ServerName))
             {
-                MessageBox.Show("Укажите имя");
+                MessageBox.Show("Укажите имя сервера");
                 Abort = true;
             }
 
             if (String.IsNullOrEmpty(BaseName))
             {
-                MessageBox.Show("Укажите имя");
+                MessageBox.Show("Укажите имя базы данных");
                 Abort = true;
             }
 
             if (!Abort)
             {
                 FillSettingsFile();
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.Show();
-                window.Close();
+                ShowMainWindow(window);
             }
         }
 

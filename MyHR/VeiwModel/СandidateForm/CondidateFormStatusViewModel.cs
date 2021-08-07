@@ -18,7 +18,10 @@ namespace MyHR
 
         internal CondidateFormStatus GetByName(string status)
         {
+            if(!string.IsNullOrEmpty(status))
             return CondidateFormStatusList.Find(item=> item.Name.Contains(status));
+
+            return null;
         }
     }
 

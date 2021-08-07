@@ -18,7 +18,10 @@ namespace MyHR
 
         internal OrderStatus GetByName(string status)
         {
+            if (!string.IsNullOrEmpty(status))
             return OrderStatusList.Find(item => item.Name.Contains(status));
+
+            return null;
         }
 
     }

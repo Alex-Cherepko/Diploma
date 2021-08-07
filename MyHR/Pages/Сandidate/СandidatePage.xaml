@@ -58,6 +58,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Код" Binding="{Binding СandidateId}"/>
                     <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}"/>
+                    <DataGridTextColumn Header="Статус" Binding="{Binding Status}"/>
                     <DataGridTextColumn Header="Описание" Binding="{Binding Description}"/>
                 </DataGrid.Columns>
                 

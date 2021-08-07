@@ -18,6 +18,14 @@ namespace MyHR
             new CondidateStatus(5,"Черный список")
 
         };
+
+        internal CondidateStatus GetByName(string status)
+        {
+            if(!string.IsNullOrEmpty(status))
+            return CondidateStatusList.Find(item => item.Name.Contains(status));
+
+            return null;
+        }
     }
 
     public class CondidateStatus

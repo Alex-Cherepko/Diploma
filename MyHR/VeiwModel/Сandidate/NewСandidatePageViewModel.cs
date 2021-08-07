@@ -38,9 +38,9 @@ namespace MyHR
 
         public DateTime BrdDate { get; set; }
 
-       // public Vacancy Vacancy { get; set; }
+        public CondidateStatus Status { get; set; }
 
-        
+        public List<CondidateStatus> CondidateStatusList { get; set; }
 
         #endregion
 
@@ -72,8 +72,11 @@ namespace MyHR
             CommandOK = new RelayCommand(() => SaveChangesAndClose());
             CommandSave = new RelayCommand(() => SaveChanges());
             ClosePage = new RelayCommand(() => CloseNewPage());
-            //SelectVacancy = new RelayCommand(() => SelectVacancyCommand());
             FindUploadCommand = new RelayCommand(()=> EnterInputed());
+
+            CondidateStatusViewModel condidateStatusViewModel = new CondidateStatusViewModel();
+            CondidateStatusList = condidateStatusViewModel.CondidateStatusList;
+            Status = condidateStatusViewModel.CondidateStatus;
 
             if (mApplicationPageCommands == ApplicationPageCommands.New)
             {
@@ -92,6 +95,7 @@ namespace MyHR
                 Patronymic = mСandidate.Patronymic;
                 Description = mСandidate.Description;
                 BrdDate = mСandidate.BrdDate;
+                Status = condidateStatusViewModel.GetByName(mСandidate.Status);
 
             }
             else if (mApplicationPageCommands == ApplicationPageCommands.Copy)
@@ -104,6 +108,8 @@ namespace MyHR
                 mСandidate.Patronymic = CurrentVacancy.Patronymic;
                 mСandidate.Description = CurrentVacancy.Description;
                 mСandidate.BrdDate = CurrentVacancy.BrdDate;
+                mСandidate.BrdDate = CurrentVacancy.BrdDate;
+                mСandidate.Status = CurrentVacancy.Status;
 
                 FullName = mСandidate.FullName;
                 Name = mСandidate.Name;
@@ -111,6 +117,7 @@ namespace MyHR
                 Patronymic = mСandidate.Patronymic;
                 Description = mСandidate.Description;
                 BrdDate = mСandidate.BrdDate;
+                Status = condidateStatusViewModel.GetByName(mСandidate.Status);
             }
         }
 
@@ -175,6 +182,7 @@ namespace MyHR
                 mСandidate.Patronymic = Patronymic;
                 mСandidate.Description = Description;
                 mСandidate.BrdDate = BrdDate;
+                mСandidate.Status = Status.Name;
 
                 context.Сandidates.Add(mСandidate);
             }
@@ -187,6 +195,7 @@ namespace MyHR
                 currVal.Patronymic = Patronymic;
                 currVal.Description = Description;
                 currVal.BrdDate = BrdDate;
+                currVal.Status = Status.Name;
             }
             context.SaveChanges();
             

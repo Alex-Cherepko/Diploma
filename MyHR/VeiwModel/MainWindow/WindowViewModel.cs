@@ -178,11 +178,12 @@ namespace MyHR
         {
             using (EntityContext context = new EntityContext("ConnectionToDB"))
             {
-                context.Positions.Load();
-                context.Vacancies.Load();
-                context.Сandidates.Load();
-                context.СandidateFormes.Load();
-                context.Orders.Load();
+                context.Database.Initialize(false);
+                //context.Positions.Load();
+                //context.Vacancies.Load();
+                //context.Сandidates.Load();
+                //context.СandidateFormes.Load();
+                //context.Orders.Load();
 
             }
             mPropertyChangeModel = propertyChangeModel;
