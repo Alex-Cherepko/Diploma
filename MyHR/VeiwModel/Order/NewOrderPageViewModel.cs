@@ -165,6 +165,7 @@ namespace MyHR
 
         private void CloseNewPage()
         {
+            context.Dispose();
             mPropertyChangeModel.ClosePage(null);
         }
 
@@ -180,10 +181,10 @@ namespace MyHR
             return true;
         }
 
-        private void SaveChanges()
+        private bool SaveChanges()
         {
             if (!ChecFields())
-                return;
+                return false;
 
             var currVal = context.Orders.Where(c => c.Code == OrderId).FirstOrDefault();
             if (currVal == null)
@@ -249,14 +250,17 @@ namespace MyHR
 
             context.SaveChanges();
 
+            return true;
         }
 
         private void SaveChangesAndClose()
         {
-            SaveChanges();
-            context.Dispose();
+            if (SaveChanges())
+            {
+                context.Dispose();
 
-            mPropertyChangeModel.ClosePage(null);
+                mPropertyChangeModel.ClosePage(null);
+            }
         }
 
         private void PropertyChangeModelSendValue(object sender, object Value)
