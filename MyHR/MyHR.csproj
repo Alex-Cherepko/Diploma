@@ -101,6 +101,7 @@
     <Compile Include="DataModels\ApplicationPageCommands.cs" />
     <Compile Include="DataModels\ApplicationPage.cs" />
     <Compile Include="DataModels\ApplicationUserControl.cs" />
+    <Compile Include="DataModels\DataLogger.cs" />
     <Compile Include="Interface\IMessageBus.cs" />
     <Compile Include="BDModels\Base\DataBaseInitializer.cs" />
     <Compile Include="BDModels\Base\EntityContext.cs" />

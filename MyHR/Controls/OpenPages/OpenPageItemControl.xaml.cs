@@ -24,7 +24,7 @@ namespace MyHR
         {
             InitializeComponent();
         }
-        public OpenPageItemControl(string NamePage, UserControl CurrentPage, UserControl NextPage, PropertyChangeModel PropertyChangeModel) :this()
+        public OpenPageItemControl(string NamePage, UserControl CurrentPage, UserControl NextPage, PropertyChangeModel PropertyChangeModel) : this()
         {
             DataContext = new OpenPageItemViewModel(NamePage, CurrentPage, NextPage, PropertyChangeModel);
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -176,15 +177,32 @@ namespace MyHR
         /// </summary>
         public WindowViewModel(Window window, PropertyChangeModel propertyChangeModel)
         {
-            using (EntityContext context = new EntityContext("ConnectionToDB"))
-            {
-                context.Database.Initialize(false);
-                //context.Positions.Load();
-                //context.Vacancies.Load();
-                //context.Сandidates.Load();
-                //context.СandidateFormes.Load();
-                //context.Orders.Load();
+            DataLogger Logger = new DataLogger();
 
+            if (!Directory.Exists("C:\\ProgramData\\MyHR"))
+            {
+                Directory.CreateDirectory("C:\\ProgramData\\MyHR");
+                Logger.WriteToLog(@"Создан каталог: C:\ProgramData\MyHR " + DateTime.Now.ToString());
+            }
+
+            try
+            {
+                using (EntityContext context = new EntityContext("ConnectionToDB"))
+                {
+                    Logger.WriteToLog(@"Получен контекст базы данных " + DateTime.Now.ToString());
+                    context.Database.Initialize(false);
+                    Logger.WriteToLog(@"Прошел процесс инициализации базы данных " + DateTime.Now.ToString());
+                }
+            }
+            catch
+            {
+                Logger.WriteToLog(@"Не удалось создать контекст базы данных " + DateTime.Now.ToString());
+                Logger.WriteToLog(@"Параметры подключения к базе данных: ");
+                Logger.WriteToLog(@"connectionString = data source = (localdb)\MSSQLLocalDB; AttachDbFilename = C:\ProgramData\MyHR\MyHR.mdf; Integrated Security = True;");
+                Logger.WriteToLog(@"providerName = System.Data.SqlClient");
+                Logger.WriteToLog(@"defaultConnectionFactory type = System.Data.Entity.Infrastructure.LocalDbConnectionFactory, EntityFramework");
+                Logger.WriteToLog(@"parameter value = mssqllocaldb");
+                Logger.WriteToLog(@"provider invariantName = System.Data.SqlClient type = System.Data.Entity.SqlServer.SqlProviderServices, EntityFramework.SqlServer");
             }
             mPropertyChangeModel = propertyChangeModel;
             mPropertyChangeModel.ValueChanged += PropertyChangeModelValueChanged;
@@ -560,6 +578,7 @@ namespace MyHR
             OnPropertyChanged(nameof(WindowCornerRadius));
         }
 
+        
         #endregion
     }
 }

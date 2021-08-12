@@ -19,6 +19,8 @@ namespace MyHR
 
         private EntityContext context;
 
+        private DataLogger Logger;
+
         #endregion
 
         #region Public Members
@@ -51,6 +53,8 @@ namespace MyHR
 
         public VacancyPageViewModel(PropertyChangeModel PropertyChangeModel)
         {
+            Logger = new DataLogger();
+
             mPropertyChangeModel = PropertyChangeModel;
 
             New = new RelayCommand(() => NewVacancy());
@@ -61,10 +65,28 @@ namespace MyHR
             ClosePage = new RelayCommand(() => ClosePageVacancy());
             SelectVacancy = new RelayCommand(() => SelectPositionCommand());
 
-            context = new EntityContext("ConnectionToDB");
-            context.Vacancies.Load();
-            GridDataContext = context.Vacancies.Include(v=>v.Position).ToList();
-            context.Dispose();
+            try
+            {
+                context = new EntityContext("ConnectionToDB");
+            }
+            catch(Exception e)
+            {
+                Logger.WriteToLog(@"Список вакансий: не удалось получить контекст базы данных");
+                Logger.WriteToLog(e.Message);
+            }
+            try
+            {
+
+                context.Vacancies.Load();
+                GridDataContext = context.Vacancies.Include(v=>v.Position).ToList();
+                context.Dispose();
+
+            }catch(Exception e)
+            {
+                Logger.WriteToLog(@"Список вакансий: не удалось получить данные из базы");
+                Logger.WriteToLog(e.Message);
+            }
+            
         }
 
         private void DeleteVacancy()

@@ -20,6 +20,8 @@ namespace MyHR
 
         private EntityContext context;
 
+        private DataLogger Logger;
+
         #endregion
 
         #region Public Members
@@ -57,6 +59,8 @@ namespace MyHR
 
         public PositionPageViewModel(PropertyChangeModel PropertyChangeModel)
         {
+            Logger = new DataLogger();
+
             mPropertyChangeModel = PropertyChangeModel;
 
             New = new RelayCommand(() => NewPosition());
@@ -67,10 +71,29 @@ namespace MyHR
             ClosePage = new RelayCommand(() => ClosePagePosition());
             SelectPosition = new RelayCommand(() => SelectPositionCommand());
 
-            context = new EntityContext("ConnectionToDB");
-            context.Positions.Load();
-            GridDataContext = context.Positions.Local;
-            context.Dispose();
+            try
+            {
+                context = new EntityContext("ConnectionToDB");
+
+            }catch( Exception e)
+            {
+                Logger.WriteToLog(@"Список должностей: не удалось получить контекст базы данных");
+                Logger.WriteToLog(e.Message);
+            }
+            try
+            { 
+
+                context.Positions.Load();
+                GridDataContext = context.Positions.Local;
+
+            }catch(Exception e)
+            {
+                Logger.WriteToLog(@"Список должностей: не удалось получить данные из базы");
+                Logger.WriteToLog(e.Message);
+            }
+
+            try { context.Dispose(); } catch { }
+            
         }
 
         private void DeletePosition()
