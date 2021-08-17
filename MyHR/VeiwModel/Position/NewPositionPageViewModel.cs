@@ -15,8 +15,9 @@ namespace MyHR
 
         private readonly PropertyChangeModel mPropertyChangeModel;
         private readonly ApplicationPageCommands mApplicationPageCommands;
-        private EntityContext context;
+        //private EntityContext context;
         private Position mPosition;
+        private DataLogger Logger;
 
         #endregion
 
@@ -47,7 +48,7 @@ namespace MyHR
             mPropertyChangeModel = PropertyChangeModel;
             mApplicationPageCommands = applicationPageCommands;
 
-            context = new EntityContext("ConnectionToDB");
+            Logger = new DataLogger();
 
             CommandOK = new RelayCommand(()=>SaveChangesAndClose());
             CommandSave = new RelayCommand(() => SaveChanges());
@@ -79,9 +80,20 @@ namespace MyHR
 
         private int GetNewCode()
         {
-            if (context.Positions.Count() > 0)
+            try
             {
-                return context.Positions.Max(c => c.Code) + 1;
+                using (EntityContext context = new EntityContext("ConnectionToDB"))
+                {
+                    if (context.Positions.Count() > 0)
+                    {
+                        return context.Positions.Max(c => c.Code) + 1;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.WriteToLog(@"Должность: не удалось получить данные из базы");
+                Logger.WriteToLog(e.Message);
             }
             return 1;
         }
@@ -98,7 +110,6 @@ namespace MyHR
         }
         private void CloseNewPage()
         {
-            context.Dispose();
             mPropertyChangeModel.ClosePage(null);
         }
 
@@ -107,24 +118,35 @@ namespace MyHR
             if (!ChecFields())
                 return false;
 
-            var currVal = context.Positions.Where(c => c.Code == PositionId).FirstOrDefault();
-            if (currVal == null)
+            try
             {
+                using (EntityContext context = new EntityContext("ConnectionToDB")) 
+                {
+                    var currVal = context.Positions.Where(c => c.Code == PositionId).FirstOrDefault();
+                    if (currVal == null)
+                    {
 
-                mPosition.Code = PositionId;
-                mPosition.Name = Name;
+                        mPosition.Code = PositionId;
+                        mPosition.Name = Name;
 
-                context.Positions.Add(mPosition);
+                        context.Positions.Add(mPosition);
 
-            }
-            else 
+                    }
+                    else
+                    {
+                        currVal.Code = PositionId;
+                        currVal.Name = Name;
+
+                    }
+
+                    context.SaveChanges();
+                }
+            }catch(Exception e)
             {
-                currVal.Code = PositionId;
-                currVal.Name = Name;
-
+                Logger.WriteToLog(@"Должность: не удалось записать данные в базу");
+                Logger.WriteToLog(e.Message);
             }
 
-            context.SaveChanges();
             return true;
         }
 
@@ -132,8 +154,6 @@ namespace MyHR
         {
             if (SaveChanges())
             {
-                context.Dispose();
-
                 mPropertyChangeModel.ClosePage(null);
             }
         }

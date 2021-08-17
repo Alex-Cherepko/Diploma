@@ -15,7 +15,7 @@ namespace MyHR
 
         private readonly PropertyChangeModel mPropertyChangeModel;
 
-        private EntityContext context;
+       //private EntityContext context;
 
         private DataLogger Logger;
 
@@ -66,44 +66,47 @@ namespace MyHR
 
             try
             {
-                context = new EntityContext("ConnectionToDB");
+                try
+                {
+                    using (EntityContext context = new EntityContext("ConnectionToDB"))
+                    {
+                        DataContext = context.СandidateFormes.Include(v => v.Vacancy).Include(c => c.Сandidate).ToList();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Logger.WriteToLog(@"Список анкет: не удалось получить данные из базы");
+                    Logger.WriteToLog(e.Message);
+                }
             }
             catch (Exception e)
             {
                 Logger.WriteToLog(@"Список анкет: не удалось получить контекст базы данных");
                 Logger.WriteToLog(e.Message);
             }
-            try
-            {
-
-                DataContext = context.СandidateFormes.Include(v => v.Vacancy).Include(c => c.Сandidate).ToList();
-                context.Dispose();
-
-            }
-            catch (Exception e)
-            {
-                Logger.WriteToLog(@"Список анкет: не удалось получить данные из базы");
-                Logger.WriteToLog(e.Message);
-            }
+            
         }
 
         private void DeleteСandidate()
         {
-            context = new EntityContext("ConnectionToDB");
-
             try
             {
+                using (EntityContext context = new EntityContext("ConnectionToDB"))
+                {
+                    СandidateForm candidateForm = context.СandidateFormes.Where(o => o.СandidateFormId == SelectedPosition.СandidateFormId).FirstOrDefault();
+                    if (candidateForm != null)
+                        context.СandidateFormes.Remove(candidateForm);
+                    context.SaveChanges();
 
-                СandidateForm candidateForm = context.СandidateFormes.Where(o => o.СandidateFormId == SelectedPosition.СandidateFormId).FirstOrDefault();
-                if (candidateForm != null)
-                    context.СandidateFormes.Remove(candidateForm);
-                context.SaveChanges();
-
-                DataContext = context.СandidateFormes.Include(v => v.Vacancy).Include(c => c.Сandidate).ToList();
+                    DataContext = context.СandidateFormes.Include(v => v.Vacancy).Include(c => c.Сandidate).ToList();
+                }
             }
-            catch { MessageBox.Show("Удалить не возможно. Есть ссылки на другие объекты", "Ошибка удаления"); }
-
-            context.Dispose();
+            catch(Exception e)
+            {
+                MessageBox.Show("Удалить не возможно. Есть ссылки на другие объекты", "Ошибка удаления");
+                Logger.WriteToLog(@"Список анкет: не удалось удалить должность базы данных");
+                Logger.WriteToLog(e.Message);
+            }
         }
 
         private void SelectCandidateFormCommand()
@@ -114,11 +117,17 @@ namespace MyHR
 
         private void UpdateListСandidate()
         {
-            //context.Сandidates.Load();
-            context = new EntityContext("ConnectionToDB");
+            try
+            {
+                using (EntityContext context = new EntityContext("ConnectionToDB")) {
 
-            DataContext = context.СandidateFormes.Include(v => v.Vacancy).Include(c => c.Сandidate).ToList();
-            context.Dispose();
+                    DataContext = context.СandidateFormes.Include(v => v.Vacancy).Include(c => c.Сandidate).ToList();
+                }
+            }catch(Exception e)
+            {
+                Logger.WriteToLog(@"Список анкет: не удалось получить данные из базы");
+                Logger.WriteToLog(e.Message);
+            }
         }
 
         private void ClosePageСandidate()

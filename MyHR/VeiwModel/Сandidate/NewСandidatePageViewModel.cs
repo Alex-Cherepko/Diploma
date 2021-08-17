@@ -15,8 +15,9 @@ namespace MyHR
 
         private readonly PropertyChangeModel mPropertyChangeModel;
         private readonly ApplicationPageCommands mApplicationPageCommands;
-        private EntityContext context;
+        //private EntityContext context;
         private Сandidate mСandidate;
+        private DataLogger Logger;
 
         #endregion
 
@@ -67,7 +68,7 @@ namespace MyHR
             //mPropertyChangeModel.SendValueEvent += PropertyChangeModelSendValue;
             mApplicationPageCommands = applicationPageCommands;
 
-            context = new EntityContext("ConnectionToDB");
+            Logger = new DataLogger();
 
             CommandOK = new RelayCommand(() => SaveChangesAndClose());
             CommandSave = new RelayCommand(() => SaveChanges());
@@ -139,9 +140,20 @@ namespace MyHR
 
         private int GetNewCode()
         {
-            if (context.Сandidates.Count() > 0)
+            try
             {
-                return context.Сandidates.Max(c => c.Code) + 1;
+                using (EntityContext context = new EntityContext("ConnectionToDB"))
+                {
+                    if (context.Сandidates.Count() > 0)
+                    {
+                        return context.Сandidates.Max(c => c.Code) + 1;
+                    }
+                }
+
+            }catch(Exception e)
+            {
+                Logger.WriteToLog(@"Соискатель: не удалось получить данные из базы");
+                Logger.WriteToLog(e.Message);
             }
             return 1;
         }
@@ -153,7 +165,6 @@ namespace MyHR
 
         private void CloseNewPage()
         {
-            context.Dispose();
             mPropertyChangeModel.ClosePage(null);
         }
 
@@ -173,33 +184,43 @@ namespace MyHR
             if (!ChecFields())
             { return false;}
 
-            var currVal = context.Сandidates.Where(c => c.Code == СandidateId).FirstOrDefault();
-            if (currVal == null)
+            try
             {
-                mСandidate.Code = СandidateId;
-                mСandidate.FullName = FullName;
-                mСandidate.Name = Name;
-                mСandidate.Surname = Surname;
-                mСandidate.Patronymic = Patronymic;
-                mСandidate.Description = Description;
-                mСandidate.BrdDate = BrdDate;
-                mСandidate.Status = Status.Name;
+                using (EntityContext context = new EntityContext("ConnectionToDB"))
+                {
+                    Сandidate currVal = context.Сandidates.Where(c => c.Code == СandidateId).FirstOrDefault();
+                    if (currVal == null)
+                    {
+                        mСandidate.Code = СandidateId;
+                        mСandidate.FullName = FullName;
+                        mСandidate.Name = Name;
+                        mСandidate.Surname = Surname;
+                        mСandidate.Patronymic = Patronymic;
+                        mСandidate.Description = Description;
+                        mСandidate.BrdDate = BrdDate;
+                        mСandidate.Status = Status.Name;
 
-                context.Сandidates.Add(mСandidate);
-            }
-            else
+                        context.Сandidates.Add(mСandidate);
+                    }
+                    else
+                    {
+                        currVal.Code = СandidateId;
+                        currVal.FullName = FullName;
+                        currVal.Name = Name;
+                        currVal.Surname = Surname;
+                        currVal.Patronymic = Patronymic;
+                        currVal.Description = Description;
+                        currVal.BrdDate = BrdDate;
+                        currVal.Status = Status.Name;
+                    }
+                    context.SaveChanges();
+                }
+
+            }catch(Exception e)
             {
-                currVal.Code = СandidateId;
-                currVal.FullName = FullName;
-                currVal.Name = Name;
-                currVal.Surname = Surname;
-                currVal.Patronymic = Patronymic;
-                currVal.Description = Description;
-                currVal.BrdDate = BrdDate;
-                currVal.Status = Status.Name;
+                Logger.WriteToLog(@"Соискатель: не удалось записать данные в базу");
+                Logger.WriteToLog(e.Message);
             }
-            context.SaveChanges();
-            
             return true;
         }
 
@@ -208,7 +229,6 @@ namespace MyHR
 
             if (SaveChanges())
             {
-                context.Dispose();
                 mPropertyChangeModel.ClosePage(null);
             }
         }

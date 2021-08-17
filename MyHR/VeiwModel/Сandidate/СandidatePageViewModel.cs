@@ -15,7 +15,7 @@ namespace MyHR
 
         private readonly PropertyChangeModel mPropertyChangeModel;
 
-        private EntityContext context;
+        //private EntityContext context;
 
         private DataLogger Logger;
 
@@ -66,54 +66,67 @@ namespace MyHR
 
             try
             {
-                context = new EntityContext("ConnectionToDB");
+                try
+                {
+                    using (EntityContext context = new EntityContext("ConnectionToDB"))
+                    {
+                        context.Сandidates.Load();
+                        DataContext = context.Сandidates.ToList();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Logger.WriteToLog(@"Список соискателей: не удалось получить данные из базы");
+                    Logger.WriteToLog(e.Message);
+                }
             }
             catch (Exception e)
             {
                 Logger.WriteToLog(@"Список соискателей: не удалось получить контекст базы данных");
                 Logger.WriteToLog(e.Message);
             }
-            try
-            {
-
-                context.Сandidates.Load();
-                DataContext = context.Сandidates.ToList();
-                context.Dispose();
-
-            }
-            catch (Exception e)
-            {
-                Logger.WriteToLog(@"Список соискателей: не удалось получить данные из базы");
-                Logger.WriteToLog(e.Message);
-            }
+            
         }
 
         private void DeleteСandidate()
         {
-            context = new EntityContext("ConnectionToDB");
+            
 
             try
             {
+                using (EntityContext context = new EntityContext("ConnectionToDB"))
+                {
+                    Сandidate candidate = context.Сandidates.Where(o => o.СandidateId == SelectedPosition.СandidateId).FirstOrDefault();
+                    if (candidate != null)
+                        context.Сandidates.Remove(candidate);
+                    context.SaveChanges();
 
-                Сandidate candidate = context.Сandidates.Where(o => o.СandidateId == SelectedPosition.СandidateId).FirstOrDefault();
-                if (candidate != null)
-                    context.Сandidates.Remove(candidate);
-                context.SaveChanges();
-
-                DataContext = context.Сandidates.ToList();
+                    DataContext = context.Сandidates.ToList();
+                }
             }
-            catch { MessageBox.Show("Удалить не возможно. Есть ссылки на другие объекты", "Ошибка удаления"); }
+            catch (Exception e)
+            {
+                MessageBox.Show("Удалить не возможно. Есть ссылки на другие объекты", "Ошибка удаления");
+                Logger.WriteToLog(@"Список соискателей: не удалось удалить должность базы данных");
+                Logger.WriteToLog(e.Message);
+            }
 
-            context.Dispose();
         }
 
         private void UpdateListСandidate()
         {
-            context = new EntityContext("ConnectionToDB");
-
-            context.Сandidates.Load();
-            DataContext = context.Сandidates.ToList();
-            context.Dispose();
+            try
+            {
+                using (EntityContext context = new EntityContext("ConnectionToDB"))
+                {
+                    context.Сandidates.Load();
+                    DataContext = context.Сandidates.ToList();
+                }
+            }catch(Exception e)
+            {
+                Logger.WriteToLog(@"Список соискателей: не удалось получить данные из базы");
+                Logger.WriteToLog(e.Message);
+            }
         }
 
         private void SelectCandidateCommand()

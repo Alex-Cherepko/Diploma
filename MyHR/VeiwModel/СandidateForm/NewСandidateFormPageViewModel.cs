@@ -15,7 +15,8 @@ namespace MyHR
 
         private readonly PropertyChangeModel mPropertyChangeModel;
         private readonly ApplicationPageCommands mApplicationPageCommands;
-        private EntityContext context;
+        //private EntityContext context;
+        private DataLogger Logger;
         private СandidateForm mСandidateForm;
 
         #endregion
@@ -64,7 +65,7 @@ namespace MyHR
             mPropertyChangeModel.SendValueEvent += PropertyChangeModelSendValue;
             mApplicationPageCommands = applicationPageCommands;
 
-            context = new EntityContext("ConnectionToDB");
+            Logger = new DataLogger();
 
             CommandOK = new RelayCommand(() => SaveChangesAndClose());
             CommandSave = new RelayCommand(() => SaveChanges());
@@ -123,9 +124,19 @@ namespace MyHR
 
         private int GetNewCode()
         {
-            if (context.СandidateFormes.Count() > 0)
+            try
             {
-                return context.СandidateFormes.Max(c => c.Code) + 1;
+                using (EntityContext context = new EntityContext("ConnectionToDB"))
+                {
+                    if (context.СandidateFormes.Count() > 0)
+                    {
+                        return context.СandidateFormes.Max(c => c.Code) + 1;
+                    }
+                }
+            }catch(Exception e)
+            {
+                Logger.WriteToLog(@"Анкета: не удалось получить данные из базы");
+                Logger.WriteToLog(e.Message);
             }
             return 1;
         }
@@ -137,7 +148,6 @@ namespace MyHR
 
         private void CloseNewPage()
         {
-            context.Dispose();
             mPropertyChangeModel.ClosePage(null);
         }
 
@@ -162,33 +172,41 @@ namespace MyHR
         {
             if (!ChecFields())
                 return false;
-
-            var currVal = context.СandidateFormes.Where(c => c.Code == СandidateFormId).FirstOrDefault();
-            if (currVal == null)
+            try
             {
-                mСandidateForm.Code = СandidateFormId;
-                mСandidateForm.DocDate = DocDate;
-                mСandidateForm.Sity = Sity;
-                mСandidateForm.Status = Status.Name;
-                mСandidateForm.Description = Description;
-                mСandidateForm.VacancyId = Vacancy.VacancyId;
-                mСandidateForm.СandidateId = Сandidate.СandidateId;
+                using (EntityContext context = new EntityContext("ConnectionToDB"))
+                {
+                    СandidateForm currVal = context.СandidateFormes.Where(c => c.Code == СandidateFormId).FirstOrDefault();
+                    if (currVal == null)
+                    {
+                        mСandidateForm.Code = СandidateFormId;
+                        mСandidateForm.DocDate = DocDate;
+                        mСandidateForm.Sity = Sity;
+                        mСandidateForm.Status = Status.Name;
+                        mСandidateForm.Description = Description;
+                        mСandidateForm.VacancyId = Vacancy.VacancyId;
+                        mСandidateForm.СandidateId = Сandidate.СandidateId;
 
-                context.СandidateFormes.Add(mСandidateForm);
-            }
-            else
+                        context.СandidateFormes.Add(mСandidateForm);
+                    }
+                    else
+                    {
+                        currVal.Code = СandidateFormId;
+                        currVal.DocDate = DocDate;
+                        currVal.Sity = Sity;
+                        currVal.Status = Status.Name;
+                        currVal.Description = Description;
+                        currVal.VacancyId = Vacancy.VacancyId;
+                        currVal.СandidateId = Сandidate.СandidateId;
+
+                    }
+                    context.SaveChanges();
+                }
+            }catch(Exception e)
             {
-                currVal.Code = СandidateFormId;
-                currVal.DocDate = DocDate;
-                currVal.Sity = Sity;
-                currVal.Status = Status.Name;
-                currVal.Description = Description;
-                currVal.VacancyId = Vacancy.VacancyId;
-                currVal.СandidateId = Сandidate.СandidateId;
-
+                Logger.WriteToLog(@"Анкета: не удалось записать данные в базу");
+                Logger.WriteToLog(e.Message);
             }
-            context.SaveChanges();
-
             return true;
             
         }
@@ -197,8 +215,6 @@ namespace MyHR
         {
             if (SaveChanges())
             {
-                context.Dispose();
-
                 mPropertyChangeModel.ClosePage(null);
             }
         }

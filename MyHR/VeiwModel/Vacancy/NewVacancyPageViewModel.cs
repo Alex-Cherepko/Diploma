@@ -14,8 +14,9 @@ namespace MyHR
 
         private readonly PropertyChangeModel mPropertyChangeModel;
         private readonly ApplicationPageCommands mApplicationPageCommands;
-        private EntityContext context;
+        //private EntityContext context;
         private Vacancy mVacancy;
+        private DataLogger Logger;
 
         #endregion
 
@@ -55,7 +56,8 @@ namespace MyHR
             mPropertyChangeModel.SendValueEvent += PropertyChangeModelSendValue;
             mApplicationPageCommands = applicationPageCommands;
 
-            context = new EntityContext("ConnectionToDB");
+            Logger = new DataLogger();
+            
 
             CommandOK = new RelayCommand(() => SaveChangesAndClose());
             CommandSave = new RelayCommand(() => SaveChanges());
@@ -99,9 +101,19 @@ namespace MyHR
 
         private int GetNewCode()
         {
-            if (context.Vacancies.Count() > 0)
+            try
             {
-                return context.Vacancies.Max(c => c.Code) + 1;
+                using (EntityContext context = new EntityContext("ConnectionToDB"))
+                {
+                    if (context.Vacancies.Count() > 0)
+                    {
+                        return context.Vacancies.Max(c => c.Code) + 1;
+                    }
+                }
+            }catch(Exception e)
+            {
+                Logger.WriteToLog(@"Вакансия: не удалось получить данные из базы");
+                Logger.WriteToLog(e.Message);
             }
             return 1;
         }
@@ -127,7 +139,6 @@ namespace MyHR
 
         private void CloseNewPage()
         {
-            context.Dispose();
             mPropertyChangeModel.ClosePage(null);
         }
 
@@ -150,28 +161,34 @@ namespace MyHR
         {
             if (!ChecFields())
                 return false;
-
-            var currVal = context.Vacancies.Where(c => c.Code == VacancyId).FirstOrDefault();
-            if(currVal == null)
+            try
             {
-                mVacancy.Code = VacancyId;
-                mVacancy.Name = Name;
-                mVacancy.Description = Description;
-                mVacancy.PositionId = Position.PositionId;
+                using (EntityContext context = new EntityContext("ConnectionToDB"))
+                {
+                    Vacancy currVal = context.Vacancies.Where(c => c.Code == VacancyId).FirstOrDefault();
+                    if (currVal == null)
+                    {
+                        mVacancy.Code = VacancyId;
+                        mVacancy.Name = Name;
+                        mVacancy.Description = Description;
+                        mVacancy.PositionId = Position.PositionId;
 
-                context.Vacancies.Add(mVacancy);
-            }
-            else
+                        context.Vacancies.Add(mVacancy);
+                    }
+                    else
+                    {
+                        currVal.Code = VacancyId;
+                        currVal.Name = Name;
+                        currVal.Description = Description;
+                        currVal.PositionId = Position.PositionId;
+                    }
+                    context.SaveChanges();
+                }
+            }catch(Exception e)
             {
-                currVal.Code = VacancyId;
-                currVal.Name = Name;
-                currVal.Description = Description;
-                currVal.PositionId = Position.PositionId;
+                Logger.WriteToLog(@"Вакансия: не удалось записать данные в базу");
+                Logger.WriteToLog(e.Message);
             }
-
-
-            context.SaveChanges();
-
             return true;
         }
 
@@ -179,8 +196,6 @@ namespace MyHR
         {
             if (SaveChanges())
             {
-                context.Dispose();
-
                 mPropertyChangeModel.ClosePage(null);
             }
         }

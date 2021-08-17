@@ -17,7 +17,7 @@ namespace MyHR
 
         private readonly PropertyChangeModel mPropertyChangeModel;
 
-        private EntityContext context;
+        //private EntityContext context;
 
         private DataLogger Logger;
 
@@ -67,54 +67,65 @@ namespace MyHR
 
             try
             {
-                context = new EntityContext("ConnectionToDB");
+                try
+                {
+                    using (EntityContext context = new EntityContext("ConnectionToDB"))
+                    {
+                        context.Vacancies.Load();
+                        GridDataContext = context.Vacancies.Include(v=>v.Position).ToList();
+                    }
+
+                }catch(Exception e)
+                {
+                    Logger.WriteToLog(@"Список вакансий: не удалось получить данные из базы");
+                    Logger.WriteToLog(e.Message);
+                }
             }
             catch(Exception e)
             {
                 Logger.WriteToLog(@"Список вакансий: не удалось получить контекст базы данных");
                 Logger.WriteToLog(e.Message);
             }
+        }
+
+        private void DeleteVacancy()
+        {
             try
             {
+                using (EntityContext context = new EntityContext("ConnectionToDB")) 
+                {
 
-                context.Vacancies.Load();
-                GridDataContext = context.Vacancies.Include(v=>v.Position).ToList();
-                context.Dispose();
+                    Vacancy vacancy = context.Vacancies.Where(o => o.VacancyId == SelectedPosition.VacancyId).FirstOrDefault();
+                    if (vacancy != null)
+                        context.Vacancies.Remove(vacancy);
+                    context.SaveChanges();
 
+                    GridDataContext = context.Vacancies.Include(v => v.Position).ToList();
+                }
+            }
+            catch (Exception e)
+            { 
+                MessageBox.Show("Удалить не возможно. Есть ссылки на другие объекты", "Ошибка удаления");
+                Logger.WriteToLog(@"Список вакансий: не удалось удалить должность базы данных");
+                Logger.WriteToLog(e.Message);
+            }
+
+        }
+
+        private void UpdateListVacancy()
+        {
+            try
+            {
+                using (EntityContext context = new EntityContext("ConnectionToDB"))
+                {
+                    context.Vacancies.Load();
+                    GridDataContext = context.Vacancies.Include(v => v.Position).ToList();
+                }
             }catch(Exception e)
             {
                 Logger.WriteToLog(@"Список вакансий: не удалось получить данные из базы");
                 Logger.WriteToLog(e.Message);
             }
-            
-        }
-
-        private void DeleteVacancy()
-        {
-            context = new EntityContext("ConnectionToDB");
-
-            try
-            {
-
-                Vacancy vacancy = context.Vacancies.Where(o => o.VacancyId == SelectedPosition.VacancyId).FirstOrDefault();
-                if (vacancy != null)
-                    context.Vacancies.Remove(vacancy);
-                context.SaveChanges();
-
-                GridDataContext = context.Vacancies.Include(v => v.Position).ToList();
-            }
-            catch { MessageBox.Show("Удалить не возможно. Есть ссылки на другие объекты", "Ошибка удаления"); }
-
-            context.Dispose();
-        }
-
-        private void UpdateListVacancy()
-        {
-            context = new EntityContext("ConnectionToDB");
-
-            context.Vacancies.Load();
-            GridDataContext = context.Vacancies.Include(v => v.Position).ToList();
-            context.Dispose();
         }
 
         private void SelectPositionCommand()

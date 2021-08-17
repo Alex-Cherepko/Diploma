@@ -13,7 +13,7 @@ namespace MyHR
 
         private readonly PropertyChangeModel mPropertyChangeModel;
 
-        private EntityContext context;
+        //private EntityContext context;
 
         private DataLogger Logger;
 
@@ -63,50 +63,58 @@ namespace MyHR
 
             try
             {
-                context = new EntityContext("ConnectionToDB");
+                try
+                {
+                    using (EntityContext context = new EntityContext("ConnectionToDB"))
+                    {
+                        DataContext = context.Orders.ToList();
+                    }
+                }catch (Exception e)
+                {
+                    Logger.WriteToLog(@"Список заявок: не удалось получить данные из базы");
+                    Logger.WriteToLog(e.Message);
+                }
             }
             catch (Exception e)
             {
-                Logger.WriteToLog(@"Список анкет: не удалось получить контекст базы данных");
-                Logger.WriteToLog(e.Message);
-            }
-            try
-            {
-
-                DataContext = context.Orders.ToList();
-                context.Dispose();
-
-            }
-            catch (Exception e)
-            {
-                Logger.WriteToLog(@"Список анкет: не удалось получить данные из базы");
+                Logger.WriteToLog(@"Список заявок: не удалось получить контекст базы данных");
                 Logger.WriteToLog(e.Message);
             }
         }
 
         private void DeleteOrder()
         {
-            context = new EntityContext("ConnectionToDB");
-
-            List<Order_Vacancy> OV = context.Order_Vacancy.Where(o => o.OrderId == SelectedPosition.OrderId).ToList();
-            foreach(Order_Vacancy item in OV)
+            try
             {
-                context.Order_Vacancy.Remove(item);
-            } 
+                using (EntityContext context = new EntityContext("ConnectionToDB"))
+                {
+                    List<Order_Vacancy> OV = context.Order_Vacancy.Where(o => o.OrderId == SelectedPosition.OrderId).ToList();
+                    foreach (Order_Vacancy item in OV)
+                    {
+                        context.Order_Vacancy.Remove(item);
+                    }
 
-            List<Orders_CandidateForm> _СandidateFormList = context.Orders_CandidateForms.Where(o => o.OrderId == SelectedPosition.OrderId).ToList();
-            foreach (Orders_CandidateForm item in _СandidateFormList)
-            {
-                context.Orders_CandidateForms.Remove(item);
+                    List<Orders_CandidateForm> _СandidateFormList = context.Orders_CandidateForms.Where(o => o.OrderId == SelectedPosition.OrderId).ToList();
+                    foreach (Orders_CandidateForm item in _СandidateFormList)
+                    {
+                        context.Orders_CandidateForms.Remove(item);
+                    }
+                    Order order = context.Orders.Where(o => o.OrderId == SelectedPosition.OrderId).FirstOrDefault();
+                    if (order != null)
+                        context.Orders.Remove(order);
+                    context.SaveChanges();
+
+                    DataContext = context.Orders.ToList();
+
+                }
             }
-            Order order = context.Orders.Where(o => o.OrderId == SelectedPosition.OrderId).FirstOrDefault();
-            if(order != null)
-            context.Orders.Remove(order);
-            context.SaveChanges();
-
-            DataContext = context.Orders.ToList();
-            context.Dispose();
-
+            catch(Exception e)
+            {
+                Logger.WriteToLog(@"Список заявок: не удалось удалить заявоку");
+                Logger.WriteToLog(e.Message);
+            }
+            finally { DataContext = null; }
+            
         }
 
         //private void SelectCandidateFormCommand()
@@ -117,10 +125,26 @@ namespace MyHR
 
         private void UpdateListOrder()
         {
-            context = new EntityContext("ConnectionToDB");
-
-            DataContext = context.Orders.ToList();
-            context.Dispose();
+            try
+            {
+                try
+                {
+                    using (EntityContext context = new EntityContext("ConnectionToDB"))
+                    {
+                        DataContext = context.Orders.ToList();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Logger.WriteToLog(@"Список заявок: не удалось получить данные из базы");
+                    Logger.WriteToLog(e.Message);
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.WriteToLog(@"Список заявок: не удалось получить контекст базы данных");
+                Logger.WriteToLog(e.Message);
+            }
         }
 
         private void ClosePageOrder()

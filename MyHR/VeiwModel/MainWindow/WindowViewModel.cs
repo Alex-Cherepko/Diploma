@@ -190,11 +190,19 @@ namespace MyHR
                 using (EntityContext context = new EntityContext("ConnectionToDB"))
                 {
                     Logger.WriteToLog(@"Получен контекст базы данных " + DateTime.Now.ToString());
-                    context.Database.Initialize(false);
-                    Logger.WriteToLog(@"Прошел процесс инициализации базы данных " + DateTime.Now.ToString());
+                    if (Database.Exists(@"ConnectionToDB"))
+                    {
+                        Logger.WriteToLog(@"Прошел процесс инициализации базы данных " + DateTime.Now.ToString());
+                    }
+                    else
+                    {
+                        context.Database.Initialize(false);
+                        
+                    }
+                    
                 }
             }
-            catch
+            catch(Exception e)
             {
                 Logger.WriteToLog(@"Не удалось создать контекст базы данных " + DateTime.Now.ToString());
                 Logger.WriteToLog(@"Параметры подключения к базе данных: ");
@@ -203,6 +211,9 @@ namespace MyHR
                 Logger.WriteToLog(@"defaultConnectionFactory type = System.Data.Entity.Infrastructure.LocalDbConnectionFactory, EntityFramework");
                 Logger.WriteToLog(@"parameter value = mssqllocaldb");
                 Logger.WriteToLog(@"provider invariantName = System.Data.SqlClient type = System.Data.Entity.SqlServer.SqlProviderServices, EntityFramework.SqlServer");
+                Logger.WriteToLog(e.Message);
+                MessageBox.Show(@"Не удалось установить соединение с базой данных");
+
             }
             mPropertyChangeModel = propertyChangeModel;
             mPropertyChangeModel.ValueChanged += PropertyChangeModelValueChanged;

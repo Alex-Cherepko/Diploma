@@ -16,10 +16,11 @@ namespace MyHR
 
         private readonly PropertyChangeModel mPropertyChangeModel;
         private readonly ApplicationPageCommands mApplicationPageCommands;
-        private EntityContext context;
+        //private EntityContext context;
         private Order mOrder;
         private Order_Vacancy mOrder_Vacancy;
         private Orders_CandidateForm mOrders_CandidateForm;
+        private DataLogger Logger;
 
         #endregion
 
@@ -66,7 +67,7 @@ namespace MyHR
             mPropertyChangeModel.SendValueEvent += PropertyChangeModelSendValue;
             mApplicationPageCommands = applicationPageCommands;
 
-            context = new EntityContext("ConnectionToDB");
+            Logger = new DataLogger();
 
             CommandOK = new RelayCommand(() => SaveChangesAndClose());
             CommandSave = new RelayCommand(() => SaveChanges());
@@ -97,29 +98,40 @@ namespace MyHR
                 Status = orderStatusViewModel.GetByName(mOrder.Status);
                 ExecutionTerm = mOrder.ExecutionTerm;
 
-                mOrder_Vacancy = context.Order_Vacancy.Where(o => o.OrderId==CurrentOrder.OrderId).FirstOrDefault();
-                if (mOrder_Vacancy != null)
+                try
                 {
-                    Vacancy = mOrder_Vacancy.Vacancy;
+                    using (EntityContext context = new EntityContext("ConnectionToDB"))
+                    {
+                        mOrder_Vacancy = context.Order_Vacancy.Where(o => o.OrderId==CurrentOrder.OrderId).FirstOrDefault();
+                            if (mOrder_Vacancy != null)
+                            {
+                                Vacancy = mOrder_Vacancy.Vacancy;
                     
+                            }
+                            else
+                            {
+                                mOrder_Vacancy = new Order_Vacancy();
+                            }
+
+                            List<Orders_CandidateForm> _СandidateFormList = context.Orders_CandidateForms.Where(o => o.OrderId == mOrder.OrderId).ToList();
+                            foreach (Orders_CandidateForm item in _СandidateFormList)
+                            {
+                                СandidateFormList.Add(item.CandidateForm);
+                            }
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    mOrder_Vacancy = new Order_Vacancy();
+                    Logger.WriteToLog(@"Анкета: не удалось получить данные из базы");
+                    Logger.WriteToLog(e.Message);
                 }
 
-                List<Orders_CandidateForm> _СandidateFormList = context.Orders_CandidateForms.Where(o => o.OrderId == mOrder.OrderId).ToList();
-                foreach (Orders_CandidateForm item in _СandidateFormList)
-                {
-                    СandidateFormList.Add(item.CandidateForm);
-                }
+
 
             }
             else if (mApplicationPageCommands == ApplicationPageCommands.Copy)
             {
-                var Order_Vacancy = context.Order_Vacancy.Where(o => o.OrderId == CurrentOrder.OrderId).FirstOrDefault();
-                if (Order_Vacancy != null)
-                    Vacancy = Order_Vacancy.Vacancy;
+                
 
                 mOrder = new Order();
                 OrderId = GetNewCode();
@@ -134,11 +146,26 @@ namespace MyHR
                 Status = orderStatusViewModel.GetByName(mOrder.Status);
                 ExecutionTerm = mOrder.ExecutionTerm;
 
+                try { 
+                using (EntityContext context = new EntityContext("ConnectionToDB")) 
+                { 
+                    Order_Vacancy Order_Vacancy = context.Order_Vacancy.Where(o => o.OrderId == CurrentOrder.OrderId).FirstOrDefault();
+                if (Order_Vacancy != null)
+                    Vacancy = Order_Vacancy.Vacancy;
+
                 List<Orders_CandidateForm> _СandidateFormList = context.Orders_CandidateForms.Where(o => o.OrderId == mOrder.OrderId).ToList();
                 foreach (Orders_CandidateForm item in _СandidateFormList)
                 {
                     СandidateFormList.Add(item.CandidateForm);
                 }
+                }
+                }
+                catch (Exception e)
+                {
+                    Logger.WriteToLog(@"Анкета: не удалось получить данные из базы");
+                    Logger.WriteToLog(e.Message);
+                }
+
 
 
             }
@@ -151,9 +178,20 @@ namespace MyHR
 
         private int GetNewCode()
         {
-            if (context.Orders.Count() > 0)
+            try
             {
-                return context.Orders.Max(c => c.Code) + 1;
+                using (EntityContext context = new EntityContext("ConnectionToDB"))
+                {
+                    if (context.Orders.Count() > 0)
+                    {
+                        return context.Orders.Max(c => c.Code) + 1;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.WriteToLog(@"Анкета: не удалось получить данные из базы");
+                Logger.WriteToLog(e.Message);
             }
             return 1;
         }
@@ -165,7 +203,6 @@ namespace MyHR
 
         private void CloseNewPage()
         {
-            context.Dispose();
             mPropertyChangeModel.ClosePage(null);
         }
 
@@ -185,70 +222,80 @@ namespace MyHR
         {
             if (!ChecFields())
                 return false;
-
-            var currVal = context.Orders.Where(c => c.Code == OrderId).FirstOrDefault();
-            if (currVal == null)
+            try
             {
-                mOrder.Code = OrderId;
-                mOrder.DocDate = DocDate;
-                mOrder.ExecutionTerm = ExecutionTerm;
-                mOrder.Status = Status.Name;
-                // mOrder.VacancyId = Vacancy.VacancyId;
-
-                context.Orders.Add(mOrder);
-
-            }
-            else
-            {
-                currVal.Code = OrderId;
-                currVal.DocDate = DocDate;
-                currVal.ExecutionTerm = ExecutionTerm;
-                currVal.Status = Status.Name;
-                // currVal.VacancyId = Vacancy.VacancyId;
-
-            }
-
-            context.SaveChanges();
-
-            Order_Vacancy order_s = (from c in context.Order_Vacancy where c.Order.OrderId == mOrder.OrderId select c).FirstOrDefault();
-            if (order_s == null)
-            {
-                //mOrder_Vacancy.Order = mOrder;
-                mOrder_Vacancy.OrderId = mOrder.OrderId;
-                //mOrder_Vacancy.Vacancy = Vacancy;
-                mOrder_Vacancy.VacancyId = Vacancy.VacancyId;
-                context.Order_Vacancy.Add(mOrder_Vacancy);
-            }
-            else
-            {
-                order_s.Vacancy = Vacancy;
-            }
-
-            //context.SaveChanges();
-
-            List<Orders_CandidateForm> _СandidateFormList = context.Orders_CandidateForms.Where(o => o.OrderId == mOrder.OrderId).ToList();
-            foreach (Orders_CandidateForm item in _СandidateFormList)
-            {
-                context.Orders_CandidateForms.Remove(item);
-            }
-
-            //context.SaveChanges();
-
-            foreach (СandidateForm item in СandidateFormList)
-            {
-                mOrders_CandidateForm = new Orders_CandidateForm
+                using (EntityContext context = new EntityContext("ConnectionToDB"))
                 {
+                    Order currVal = context.Orders.Where(c => c.Code == OrderId).FirstOrDefault();
+                    if (currVal == null)
+                    {
+                        mOrder.Code = OrderId;
+                        mOrder.DocDate = DocDate;
+                        mOrder.ExecutionTerm = ExecutionTerm;
+                        mOrder.Status = Status.Name;
+                        // mOrder.VacancyId = Vacancy.VacancyId;
 
-                    //Order = mOrder,
-                    OrderId = mOrder.OrderId,
-                    //CandidateForm = item,
-                    СandidateFormId = item.СandidateFormId
+                        context.Orders.Add(mOrder);
 
-                };
-                context.Orders_CandidateForms.Add(mOrders_CandidateForm);
+                    }
+                    else
+                    {
+                        currVal.Code = OrderId;
+                        currVal.DocDate = DocDate;
+                        currVal.ExecutionTerm = ExecutionTerm;
+                        currVal.Status = Status.Name;
+                        // currVal.VacancyId = Vacancy.VacancyId;
+
+                    }
+
+                    context.SaveChanges();
+
+                    Order_Vacancy order_s = (from c in context.Order_Vacancy where c.Order.OrderId == mOrder.OrderId select c).FirstOrDefault();
+                    if (order_s == null)
+                    {
+                        //mOrder_Vacancy.Order = mOrder;
+                        mOrder_Vacancy.OrderId = mOrder.OrderId;
+                        //mOrder_Vacancy.Vacancy = Vacancy;
+                        mOrder_Vacancy.VacancyId = Vacancy.VacancyId;
+                        context.Order_Vacancy.Add(mOrder_Vacancy);
+                    }
+                    else
+                    {
+                        order_s.Vacancy = Vacancy;
+                    }
+
+                    //context.SaveChanges();
+
+                    List<Orders_CandidateForm> _СandidateFormList = context.Orders_CandidateForms.Where(o => o.OrderId == mOrder.OrderId).ToList();
+                    foreach (Orders_CandidateForm item in _СandidateFormList)
+                    {
+                        context.Orders_CandidateForms.Remove(item);
+                    }
+
+                    //context.SaveChanges();
+
+                    foreach (СandidateForm item in СandidateFormList)
+                    {
+                        mOrders_CandidateForm = new Orders_CandidateForm
+                        {
+
+                            //Order = mOrder,
+                            OrderId = mOrder.OrderId,
+                            //CandidateForm = item,
+                            СandidateFormId = item.СandidateFormId
+
+                        };
+                        context.Orders_CandidateForms.Add(mOrders_CandidateForm);
+                    }
+
+                    context.SaveChanges();
+                }
             }
-
-            context.SaveChanges();
+            catch (Exception e)
+            {
+                Logger.WriteToLog(@"Заявка: не удалось записать данные в базу");
+                Logger.WriteToLog(e.Message);
+            }
 
             return true;
         }
@@ -257,8 +304,6 @@ namespace MyHR
         {
             if (SaveChanges())
             {
-                context.Dispose();
-
                 mPropertyChangeModel.ClosePage(null);
             }
         }
