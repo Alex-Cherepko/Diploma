@@ -58,11 +58,12 @@
                 </i:Interaction.Triggers>
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Номер" Binding="{Binding OrderId}"/>
+                    <DataGridTextColumn Header="Номер" Binding="{Binding Code}"/>
                     <DataGridTextColumn Header="Дата" Binding="{Binding DocDate, StringFormat='dd.MM.yyyy'}"/>
-                    <!--<DataGridTextColumn Header="Вакансия" Binding="{Binding Vacancy}"/>-->
+                    <DataGridTextColumn Header="Вакансия" Binding="{Binding Vacancy}"/>
                     <DataGridTextColumn Header="Статус" Binding="{Binding Status}"/>
                     <DataGridTextColumn Header="Срок исполнения" Binding="{Binding ExecutionTerm , StringFormat='dd.MM.yyyy'}"/>
+                    <DataGridTextColumn Visibility="Hidden" Header="ID" Binding="{Binding OrderId}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

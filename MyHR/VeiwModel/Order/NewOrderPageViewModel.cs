@@ -16,11 +16,12 @@ namespace MyHR
 
         private readonly PropertyChangeModel mPropertyChangeModel;
         private readonly ApplicationPageCommands mApplicationPageCommands;
-        //private EntityContext context;
+        private EntityContext context;
         private Order mOrder;
         private Order_Vacancy mOrder_Vacancy;
         private Orders_CandidateForm mOrders_CandidateForm;
         private DataLogger Logger;
+        private ConnectionToDB connectionToDB;
 
         #endregion
 
@@ -68,6 +69,8 @@ namespace MyHR
             mApplicationPageCommands = applicationPageCommands;
 
             Logger = new DataLogger();
+            connectionToDB = new ConnectionToDB(true);
+            context = new EntityContext(connectionToDB.ConnectionString);
 
             CommandOK = new RelayCommand(() => SaveChangesAndClose());
             CommandSave = new RelayCommand(() => SaveChanges());
@@ -100,29 +103,33 @@ namespace MyHR
 
                 try
                 {
-                    using (EntityContext context = new EntityContext("ConnectionToDB"))
-                    {
-                        mOrder_Vacancy = context.Order_Vacancy.Where(o => o.OrderId==CurrentOrder.OrderId).FirstOrDefault();
-                            if (mOrder_Vacancy != null)
-                            {
-                                Vacancy = mOrder_Vacancy.Vacancy;
-                    
-                            }
-                            else
-                            {
-                                mOrder_Vacancy = new Order_Vacancy();
-                            }
 
-                            List<Orders_CandidateForm> _СandidateFormList = context.Orders_CandidateForms.Where(o => o.OrderId == mOrder.OrderId).ToList();
-                            foreach (Orders_CandidateForm item in _СandidateFormList)
-                            {
-                                СandidateFormList.Add(item.CandidateForm);
-                            }
-                    }
+
+                    //using (EntityContext context = new EntityContext(connectionToDB.ConnectionString))
+                    //{
+                        mOrder_Vacancy = context.Order_Vacancy.Where(o => o.OrderId == CurrentOrder.OrderId).FirstOrDefault();
+                        if (mOrder_Vacancy != null)
+                        {
+                            Vacancy = mOrder_Vacancy.Vacancy;
+
+                        }
+                        else
+                        {
+                            mOrder_Vacancy = new Order_Vacancy();
+                        }
+
+                        List<Orders_CandidateForm> _СandidateFormList = context.Orders_CandidateForms.Where(o => o.OrderId == mOrder.OrderId).ToList();
+
+                        foreach (Orders_CandidateForm item in _СandidateFormList)
+                        {
+                            СandidateFormList.Add(item.CandidateForm);
+                        }
+                    //}
+                    
                 }
                 catch (Exception e)
                 {
-                    Logger.WriteToLog(@"Анкета: не удалось получить данные из базы");
+                    Logger.WriteToLog(@"Заявка: не удалось получить данные из базы");
                     Logger.WriteToLog(e.Message);
                 }
 
@@ -147,8 +154,8 @@ namespace MyHR
                 ExecutionTerm = mOrder.ExecutionTerm;
 
                 try { 
-                using (EntityContext context = new EntityContext("ConnectionToDB")) 
-                { 
+                //using (EntityContext context = new EntityContext(connectionToDB.ConnectionString)) 
+                //{ 
                     Order_Vacancy Order_Vacancy = context.Order_Vacancy.Where(o => o.OrderId == CurrentOrder.OrderId).FirstOrDefault();
                 if (Order_Vacancy != null)
                     Vacancy = Order_Vacancy.Vacancy;
@@ -158,11 +165,11 @@ namespace MyHR
                 {
                     СandidateFormList.Add(item.CandidateForm);
                 }
-                }
+                //}
                 }
                 catch (Exception e)
                 {
-                    Logger.WriteToLog(@"Анкета: не удалось получить данные из базы");
+                    Logger.WriteToLog(@"Заявка: не удалось получить данные из базы");
                     Logger.WriteToLog(e.Message);
                 }
 
@@ -180,13 +187,13 @@ namespace MyHR
         {
             try
             {
-                using (EntityContext context = new EntityContext("ConnectionToDB"))
-                {
+                //using (EntityContext context = new EntityContext(connectionToDB.ConnectionString))
+                //{
                     if (context.Orders.Count() > 0)
                     {
                         return context.Orders.Max(c => c.Code) + 1;
                     }
-                }
+                //}
             }
             catch (Exception e)
             {
@@ -224,8 +231,8 @@ namespace MyHR
                 return false;
             try
             {
-                using (EntityContext context = new EntityContext("ConnectionToDB"))
-                {
+                //using (EntityContext context = new EntityContext(connectionToDB.ConnectionString))
+                //{
                     Order currVal = context.Orders.Where(c => c.Code == OrderId).FirstOrDefault();
                     if (currVal == null)
                     {
@@ -248,7 +255,7 @@ namespace MyHR
 
                     }
 
-                    context.SaveChanges();
+                    //context.SaveChanges();
 
                     Order_Vacancy order_s = (from c in context.Order_Vacancy where c.Order.OrderId == mOrder.OrderId select c).FirstOrDefault();
                     if (order_s == null)
@@ -289,7 +296,7 @@ namespace MyHR
                     }
 
                     context.SaveChanges();
-                }
+                //}
             }
             catch (Exception e)
             {
@@ -304,6 +311,7 @@ namespace MyHR
         {
             if (SaveChanges())
             {
+                context.Dispose();
                 mPropertyChangeModel.ClosePage(null);
             }
         }

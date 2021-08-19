@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,11 @@ namespace MyHR
 {
     class EntityContext : DbContext
     {
+        public EntityContext(DbConnection name, bool contextOwnsConnection) : base(name, contextOwnsConnection)
+        {
+            Database.SetInitializer(new DataBaseInitializer());
+        }
+
         public EntityContext(string name) : base(name)
         {
             Database.SetInitializer(new DataBaseInitializer());

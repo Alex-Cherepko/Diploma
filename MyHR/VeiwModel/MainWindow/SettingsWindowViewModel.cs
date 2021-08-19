@@ -45,24 +45,13 @@ namespace MyHR
 
         private bool ConnectionExist()
         {
-            string connectionString = "";
+            string connectionString = new ConnectionToDB(true).ConnectionString;
 
-            if (File.Exists("Settings.config"))
-            {
-                XDocument xdoc = XDocument.Load("Settings.config");
-                foreach (XElement Element in xdoc.Element("connectionStrings").Elements("add"))
-                {
-                    XAttribute nameAttribute = Element.Attribute("connectionString");
-                    connectionString = nameAttribute.Value;
-                }
-               
-            }
-            else
-            {
+
+            if (string.IsNullOrEmpty(connectionString))
                 return false;
-            }
-            
-            if(Database.Exists(connectionString))
+
+            if (Database.Exists(connectionString))
             {
                 return true;
             }
@@ -71,6 +60,8 @@ namespace MyHR
 
         private void RunMainWindow(Window window)
         {
+            DataLogger Logger = new DataLogger();
+
             bool Abort = false;
 
             if (String.IsNullOrEmpty(ServerName))
@@ -87,62 +78,98 @@ namespace MyHR
 
             if (!Abort)
             {
+                bool bdExists = false;
                 FillSettingsFile();
-                ShowMainWindow(window);
+                ConnectionToDB connectionToDB = new ConnectionToDB(false);
+                using (EntityContext context = new EntityContext(connectionToDB.dbConnection, true))
+                {
+                    if (!Database.Exists(connectionToDB.ConnectionString))
+                    {
+                        try
+                        {
+                            context.Database.Initialize(false);
+                        }
+                        catch(Exception e)
+                        {
+                            Logger.WriteToLog(@"Не удалось создать базу данных");
+                            Logger.WriteToLog(e.Message);
+                        }
+
+                    }
+                    bdExists = context.Database.Exists();
+
+                }
+
+                if (bdExists)
+                {
+                    ShowMainWindow(window);
+                }
+                else
+                { MessageBox.Show("Не удалось создать базу данных"); }
             }
         }
 
         private void FillSettingsFile()
         {
-            List<add> connectionStrings = new List<add>();
-            connectionStrings.Add(new add("ConnectionToDB", "Data Source="+ ServerName + ";Initial Catalog="+ BaseName + ";Integrated Security=True", "System.Data.SqlClient")) ;
+            List<ConnectionAttributes> connectionStringList = new List<ConnectionAttributes>
+            {
+                new ConnectionAttributes(BaseName, ServerName, "System.Data.SqlClient", @"Data Source = " + ServerName + "; Initial Catalog = " + BaseName + "; Integrated Security = True")
+            };
 
             XmlDocument doc = new XmlDocument();
 
             XmlNode root = doc.CreateElement("connectionStrings");
 
-            foreach( add Element in connectionStrings)
+            foreach (ConnectionAttributes Element in connectionStringList)
             {
                 XmlNode add = doc.CreateElement("add");
 
-                XmlAttribute name = doc.CreateAttribute("name");
-                name.Value = Element.name;
-                add.Attributes.Append(name);
+                XmlAttribute baseName = doc.CreateAttribute("BaseName");
+                baseName.Value = Element.DateBaseName;
+                add.Attributes.Append(baseName);
 
-                XmlAttribute connectionString = doc.CreateAttribute("connectionString");
-                connectionString.Value = Element.connectionString;
-                add.Attributes.Append(connectionString);
+                XmlAttribute serverName = doc.CreateAttribute("ServerName");
+                serverName.Value = Element.ServerName;
+                add.Attributes.Append(serverName);
 
-                XmlAttribute providerName = doc.CreateAttribute("providerName");
-                providerName.Value = Element.providerName;
+                XmlAttribute providerName = doc.CreateAttribute("ProviderName");
+                providerName.Value = Element.ProviderName;
                 add.Attributes.Append(providerName);
 
+                XmlAttribute connectionString = doc.CreateAttribute("ConnectionString");
+                connectionString.Value = Element.ConnectionString;
+                add.Attributes.Append(connectionString);
                 root.AppendChild(add);
             }
 
             doc.AppendChild(root);
 
-            using (FileStream fs = new FileStream("Settings.config", FileMode.OpenOrCreate))
+            try
             {
-                doc.Save(fs);
+                using (FileStream fs = File.Open("C:\\ProgramData\\MyHR\\Settings.config", FileMode.OpenOrCreate, FileAccess.Write))
+                { doc.Save(fs); }
             }
-            
-            
+            catch
+            {
+                MessageBox.Show("Не удалось сохранить файл настроек");
+            }
+
         }
 
-        
-        protected class add
+
+        protected class ConnectionAttributes
         {
-            public string name { get; set; }
-            public string connectionString { get; set; }
-            public string providerName { get; set; }
+            public string DateBaseName { get; set; }
+            public string ServerName { get; set; }
+            public string ProviderName { get; set; }
+            public string ConnectionString { get; set; }
 
-            public add(string name, string connectionString, string providerName)
+            public ConnectionAttributes(string dbName, string serverName, string providerName, string connectionString)
             {
-                this.name = name;
-                this.connectionString = connectionString;
-                this.providerName = providerName;
-
+                DateBaseName = dbName;
+                ServerName = serverName;
+                ProviderName = providerName;
+                ConnectionString = connectionString;
             }
         }
     }

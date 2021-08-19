@@ -18,7 +18,7 @@ namespace MyHR
 
         private readonly PropertyChangeModel mPropertyChangeModel;
 
-        //private EntityContext context;
+        private ConnectionToDB connectionToDB;
 
         private DataLogger Logger;
 
@@ -60,6 +60,7 @@ namespace MyHR
         public PositionPageViewModel(PropertyChangeModel PropertyChangeModel)
         {
             Logger = new DataLogger();
+            connectionToDB = new ConnectionToDB(true);
 
             mPropertyChangeModel = PropertyChangeModel;
 
@@ -75,7 +76,7 @@ namespace MyHR
             {
                 try
                 {
-                    using (EntityContext context = new EntityContext("ConnectionToDB"))
+                    using (EntityContext context = new EntityContext(connectionToDB.ConnectionString))
                     {
                         context.Positions.Load();
                         GridDataContext = context.Positions.Local;
@@ -99,7 +100,7 @@ namespace MyHR
         {
             try
             {
-                using (EntityContext context = new EntityContext("ConnectionToDB"))
+                using (EntityContext context = new EntityContext(connectionToDB.ConnectionString))
                 {
                     Position position = context.Positions.Where(o => o.PositionId == SelectedPosition.PositionId).FirstOrDefault();
                     if (position != null)
@@ -122,7 +123,7 @@ namespace MyHR
         {
             try
             {
-                using (EntityContext context = new EntityContext("ConnectionToDB"))
+                using (EntityContext context = new EntityContext(connectionToDB.ConnectionString))
                 {
                     context.Positions.Load();
                     GridDataContext = context.Positions.Local;

@@ -17,7 +17,7 @@ namespace MyHR
 
         private readonly PropertyChangeModel mPropertyChangeModel;
 
-        //private EntityContext context;
+        private ConnectionToDB connectionToDB;
 
         private DataLogger Logger;
 
@@ -54,6 +54,7 @@ namespace MyHR
         public VacancyPageViewModel(PropertyChangeModel PropertyChangeModel)
         {
             Logger = new DataLogger();
+            connectionToDB = new ConnectionToDB(true);
 
             mPropertyChangeModel = PropertyChangeModel;
 
@@ -69,7 +70,7 @@ namespace MyHR
             {
                 try
                 {
-                    using (EntityContext context = new EntityContext("ConnectionToDB"))
+                    using (EntityContext context = new EntityContext(connectionToDB.ConnectionString))
                     {
                         context.Vacancies.Load();
                         GridDataContext = context.Vacancies.Include(v=>v.Position).ToList();
@@ -92,7 +93,7 @@ namespace MyHR
         {
             try
             {
-                using (EntityContext context = new EntityContext("ConnectionToDB")) 
+                using (EntityContext context = new EntityContext(connectionToDB.ConnectionString)) 
                 {
 
                     Vacancy vacancy = context.Vacancies.Where(o => o.VacancyId == SelectedPosition.VacancyId).FirstOrDefault();
@@ -116,7 +117,7 @@ namespace MyHR
         {
             try
             {
-                using (EntityContext context = new EntityContext("ConnectionToDB"))
+                using (EntityContext context = new EntityContext(connectionToDB.ConnectionString))
                 {
                     context.Vacancies.Load();
                     GridDataContext = context.Vacancies.Include(v => v.Position).ToList();

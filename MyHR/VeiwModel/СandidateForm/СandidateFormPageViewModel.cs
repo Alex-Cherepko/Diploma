@@ -15,7 +15,7 @@ namespace MyHR
 
         private readonly PropertyChangeModel mPropertyChangeModel;
 
-       //private EntityContext context;
+        private ConnectionToDB connectionToDB;
 
         private DataLogger Logger;
 
@@ -53,6 +53,7 @@ namespace MyHR
         public СandidateFormPageViewModel(PropertyChangeModel PropertyChangeModel)
         {
             Logger = new DataLogger();
+            connectionToDB = new ConnectionToDB(true);
 
             mPropertyChangeModel = PropertyChangeModel;
 
@@ -68,7 +69,7 @@ namespace MyHR
             {
                 try
                 {
-                    using (EntityContext context = new EntityContext("ConnectionToDB"))
+                    using (EntityContext context = new EntityContext(connectionToDB.ConnectionString))
                     {
                         DataContext = context.СandidateFormes.Include(v => v.Vacancy).Include(c => c.Сandidate).ToList();
                     }
@@ -91,7 +92,7 @@ namespace MyHR
         {
             try
             {
-                using (EntityContext context = new EntityContext("ConnectionToDB"))
+                using (EntityContext context = new EntityContext(connectionToDB.ConnectionString))
                 {
                     СandidateForm candidateForm = context.СandidateFormes.Where(o => o.СandidateFormId == SelectedPosition.СandidateFormId).FirstOrDefault();
                     if (candidateForm != null)
@@ -119,7 +120,7 @@ namespace MyHR
         {
             try
             {
-                using (EntityContext context = new EntityContext("ConnectionToDB")) {
+                using (EntityContext context = new EntityContext(connectionToDB.ConnectionString)) {
 
                     DataContext = context.СandidateFormes.Include(v => v.Vacancy).Include(c => c.Сandidate).ToList();
                 }

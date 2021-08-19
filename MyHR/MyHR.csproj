@@ -81,6 +81,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BDModels\Base\ConnectionToDB.cs" />
     <Compile Include="BDModels\Orders_CandidateForm.cs" />
     <Compile Include="BDModels\Order_Vacancy.cs" />
     <Compile Include="BDModels\СandidateForm.cs" />

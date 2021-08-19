@@ -15,7 +15,7 @@ namespace MyHR
 
         private readonly PropertyChangeModel mPropertyChangeModel;
         private readonly ApplicationPageCommands mApplicationPageCommands;
-        //private EntityContext context;
+        private ConnectionToDB connectionToDB;
         private Сandidate mСandidate;
         private DataLogger Logger;
 
@@ -69,6 +69,7 @@ namespace MyHR
             mApplicationPageCommands = applicationPageCommands;
 
             Logger = new DataLogger();
+            connectionToDB = new ConnectionToDB(true);
 
             CommandOK = new RelayCommand(() => SaveChangesAndClose());
             CommandSave = new RelayCommand(() => SaveChanges());
@@ -142,7 +143,7 @@ namespace MyHR
         {
             try
             {
-                using (EntityContext context = new EntityContext("ConnectionToDB"))
+                using (EntityContext context = new EntityContext(connectionToDB.ConnectionString))
                 {
                     if (context.Сandidates.Count() > 0)
                     {
@@ -186,7 +187,7 @@ namespace MyHR
 
             try
             {
-                using (EntityContext context = new EntityContext("ConnectionToDB"))
+                using (EntityContext context = new EntityContext(connectionToDB.ConnectionString))
                 {
                     Сandidate currVal = context.Сandidates.Where(c => c.Code == СandidateId).FirstOrDefault();
                     if (currVal == null)
