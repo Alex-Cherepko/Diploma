@@ -35,13 +35,13 @@
                 Имя сервера базы данных
             </TextBlock>
 
-            <TextBox Grid.Row="0" Grid.Column="1" Margin="5,0" Padding="1" VerticalContentAlignment="Center" FontSize="{StaticResource FontSizeSmall}" Text="{Binding ServerName, UpdateSourceTrigger=PropertyChanged, FallbackValue=125}"></TextBox>
+            <TextBox Grid.Row="0" Grid.Column="1" Margin="5,0" Padding="1" VerticalContentAlignment="Center" FontSize="{StaticResource FontSizeSmall}" Text="{Binding ServerName, UpdateSourceTrigger=PropertyChanged}"></TextBox>
 
             <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Padding="3" FontSize="{StaticResource FontSizeSmall}" FontFamily="{StaticResource LatoRegular}">
                 Имя базы данных
             </TextBlock>
-            <TextBox Grid.Row="1" Grid.Column="1" Margin="5,0" Padding="1" VerticalContentAlignment="Center" FontSize="{StaticResource FontSizeSmall}" Text="{Binding BaseName, UpdateSourceTrigger=PropertyChanged, FallbackValue=123}"></TextBox>
-            <StackPanel Grid.Row ="3" Grid.ColumnSpan="2" Orientation="Horizontal" Height="30" VerticalAlignment="Top">
+            <TextBox Grid.Row="1" Grid.Column="1" Margin="5,0" Padding="1" VerticalContentAlignment="Center" FontSize="{StaticResource FontSizeSmall}" Text="{Binding BaseName, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            <StackPanel Grid.Row ="3" Grid.ColumnSpan="2" Orientation="Horizontal" Height="50" VerticalAlignment="Top">
                 <Button Content="Готово" Width="75" Margin="5" Command="{Binding AcceptChanges}"/>
                 <Button Content="Отмена" Width="75" Margin="5" Command="{Binding AbortChanges}"/>
             </StackPanel>

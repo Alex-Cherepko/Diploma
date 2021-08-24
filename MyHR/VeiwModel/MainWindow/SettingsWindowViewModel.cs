@@ -17,9 +17,10 @@ namespace MyHR
 {
     public class SettingsWindowViewModel : BaseViewModel
     {
-        public string ServerName { get; set; }
+        public string ServerName { get; set; } = @"(localdb)\MSSQLLocalDB";
 
-        public string BaseName { get; set; }
+        public string BaseName { get; set; } = @"MyHR";
+        public string LocalPath { get; set; } = @"C:\ProgramData\MyHR\MyHR.mdf";
 
         public ICommand AcceptChanges { get; set; }
 
@@ -81,23 +82,30 @@ namespace MyHR
                 bool bdExists = false;
                 FillSettingsFile();
                 ConnectionToDB connectionToDB = new ConnectionToDB(false);
-                using (EntityContext context = new EntityContext(connectionToDB.dbConnection, true))
+                if (Database.Exists(connectionToDB.ConnectionString))
                 {
-                    if (!Database.Exists(connectionToDB.ConnectionString))
+                    bdExists = true;
+                }
+                if (!bdExists)
+                {
+                    using (EntityContext context = new EntityContext(connectionToDB.dbConnection, true))
                     {
-                        try
+                        if (!Database.Exists(connectionToDB.ConnectionString))
                         {
-                            context.Database.Initialize(false);
+                            try
+                            {
+                                context.Database.Initialize(false);
+                            }
+                            catch (Exception e)
+                            {
+                                Logger.WriteToLog(@"Не удалось создать базу данных");
+                                Logger.WriteToLog(e.Message);
+                            }
+
                         }
-                        catch(Exception e)
-                        {
-                            Logger.WriteToLog(@"Не удалось создать базу данных");
-                            Logger.WriteToLog(e.Message);
-                        }
+                        bdExists = context.Database.Exists();
 
                     }
-                    bdExists = context.Database.Exists();
-
                 }
 
                 if (bdExists)
@@ -111,9 +119,20 @@ namespace MyHR
 
         private void FillSettingsFile()
         {
+            string ServerConnectionString = @"Data Source = " + ServerName + "; Initial Catalog = " + BaseName + "; Integrated Security = True";
+            string LocalServerConnectionString = @"data source=" + ServerName + ";AttachDbFilename="+ LocalPath + ";Integrated Security=True;";
+            string connString;
+            if (ServerName.Contains("(localdb)"))
+            {
+                connString = LocalServerConnectionString;
+            }
+            else
+            {
+                connString = ServerConnectionString;
+            }
             List<ConnectionAttributes> connectionStringList = new List<ConnectionAttributes>
             {
-                new ConnectionAttributes(BaseName, ServerName, "System.Data.SqlClient", @"Data Source = " + ServerName + "; Initial Catalog = " + BaseName + "; Integrated Security = True")
+                new ConnectionAttributes(BaseName, ServerName, "System.Data.SqlClient", connString , LocalPath)
             };
 
             XmlDocument doc = new XmlDocument();
@@ -140,6 +159,11 @@ namespace MyHR
                 connectionString.Value = Element.ConnectionString;
                 add.Attributes.Append(connectionString);
                 root.AppendChild(add);
+
+                XmlAttribute localPath = doc.CreateAttribute("LocalPath");
+                localPath.Value = Element.LocalPath;
+                add.Attributes.Append(localPath);
+                root.AppendChild(add);
             }
 
             doc.AppendChild(root);
@@ -163,13 +187,14 @@ namespace MyHR
             public string ServerName { get; set; }
             public string ProviderName { get; set; }
             public string ConnectionString { get; set; }
-
-            public ConnectionAttributes(string dbName, string serverName, string providerName, string connectionString)
+            public string LocalPath { get; set; }
+            public ConnectionAttributes(string dbName, string serverName, string providerName, string connectionString, string localPath)
             {
                 DateBaseName = dbName;
                 ServerName = serverName;
                 ProviderName = providerName;
                 ConnectionString = connectionString;
+                LocalPath = localPath;
             }
         }
     }

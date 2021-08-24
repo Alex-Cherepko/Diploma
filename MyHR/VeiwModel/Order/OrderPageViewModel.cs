@@ -16,6 +16,8 @@ namespace MyHR
 
         private ConnectionToDB connectionToDB;
 
+        private EntityContext context;
+
         private DataLogger Logger;
 
         #endregion
@@ -51,6 +53,7 @@ namespace MyHR
         {
             Logger = new DataLogger();
             connectionToDB = new ConnectionToDB(true);
+            context = new EntityContext(connectionToDB.ConnectionString);
 
             mPropertyChangeModel = PropertyChangeModel;
 
@@ -67,8 +70,7 @@ namespace MyHR
             {
                 try
                 {
-                    using (EntityContext context = new EntityContext(connectionToDB.ConnectionString))
-                    {
+                    
                         //DataContext = context.Orders.ToList();
                         var cont = (from o in context.Orders
                                        from ov in context.Order_Vacancy
@@ -81,8 +83,7 @@ namespace MyHR
                             DataContext.Add(NewItem);
                         }
 
-                         
-                    }
+
                 }catch (Exception e)
                 {
                     Logger.WriteToLog(@"Список заявок: не удалось получить данные из базы");
@@ -123,8 +124,7 @@ namespace MyHR
         {
             try
             {
-                using (EntityContext context = new EntityContext(connectionToDB.ConnectionString))
-                {
+                
                     List<Order_Vacancy> OV = context.Order_Vacancy.Where(o => o.OrderId == SelectedPosition.Order.OrderId).ToList();
                     foreach (Order_Vacancy item in OV)
                     {
@@ -153,7 +153,7 @@ namespace MyHR
                         DataContext.Add(NewItem);
                     }
 
-                }
+                
             }
             catch (Exception e)
             {
@@ -170,8 +170,10 @@ namespace MyHR
             {
                 try
                 {
-                    using (EntityContext context = new EntityContext(connectionToDB.ConnectionString))
-                    {
+
+                    if (DataContext.Count() > 0)
+                        DataContext.Clear();
+
                         //DataContext = context.Orders.ToList();
                         var cont = (from o in context.Orders
                                     from ov in context.Order_Vacancy
@@ -183,7 +185,7 @@ namespace MyHR
                             DataOrderList NewItem = new DataOrderList(item.OrderId, item.Code, item.DocDate, item.Status, item.ExecutionTerm, item.Vacancy, item.Order);
                             DataContext.Add(NewItem);
                         }
-                    }
+                    
                 }
                 catch (Exception e)
                 {
@@ -200,6 +202,7 @@ namespace MyHR
 
         private void ClosePageOrder()
         {
+            context.Dispose();
             mPropertyChangeModel.ClosePage(null);
         }
 

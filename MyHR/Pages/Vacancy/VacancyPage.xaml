@@ -58,8 +58,8 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Код" Binding="{Binding VacancyId}"/>
                     <DataGridTextColumn Header="Наименование" Binding="{Binding Name}"/>
-                    <DataGridTextColumn Header="Описание" Binding="{Binding Description}"/>
                     <DataGridTextColumn Header="Должность" Binding="{Binding Position.Name}"/>
+                    <DataGridTextColumn Header="Описание" Binding="{Binding Description}"/>
                 </DataGrid.Columns>
             </DataGrid>
 

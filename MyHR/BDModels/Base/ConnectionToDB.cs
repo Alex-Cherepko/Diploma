@@ -19,6 +19,7 @@ namespace MyHR
 
         private string BaseName;
         private string ServerName;
+        private string LocalPath;
 
         public ConnectionToDB(bool OnlyConectionString)
         {
@@ -39,29 +40,46 @@ namespace MyHR
                     ServerName = ServerNameAttribute.Value;
                     XAttribute ConnectionStringAttribute = Element.Attribute("ConnectionString");
                     ConnectionString = ConnectionStringAttribute.Value;
-                    
+                    XAttribute LocalPathAttribute = Element.Attribute("LocalPath");
+                    LocalPath = LocalPathAttribute.Value;
                 }
 
                 if (!OnlyConectionString)
                 {
-                    dbConnection = GetSqlConn4DbName(ServerName, BaseName);
+                    dbConnection = GetSqlConn4DbName(ServerName, BaseName, LocalPath);
                 }
 
             }
         }
 
-        public DbConnection GetSqlConn4DbName(string dataSource, string dbName)
+        public DbConnection GetSqlConn4DbName(string dataSource, string dbName, string localPath)
         {
-            var sqlConnStringBuilder = new SqlConnectionStringBuilder
+            if (dataSource.Contains("(localdb)"))
             {
-                DataSource = dataSource,
-                IntegratedSecurity = true,
-                MultipleActiveResultSets = true
-            };
+                var sqlConnStringBuilder = new SqlConnectionStringBuilder
+                {
+                    DataSource = dataSource,
+                    IntegratedSecurity = true,
+                    AttachDBFilename = localPath,
+                    MultipleActiveResultSets = true
+                };
             // NOW MY PROVIDER FACTORY OF CHOICE, switch providers here 
             var sqlConnFact = new SqlConnectionFactory(sqlConnStringBuilder.ConnectionString);
             var sqlConn = sqlConnFact.CreateConnection(dbName);
             return sqlConn;
+
+            }
+            else
+            {
+                var sqlConnStringBuilder = new SqlConnectionStringBuilder
+                {
+                    DataSource = dataSource,
+                    IntegratedSecurity = true
+                };
+                var sqlConnFact = new SqlConnectionFactory(sqlConnStringBuilder.ConnectionString);
+                var sqlConn = sqlConnFact.CreateConnection(dbName);
+                return sqlConn;
+            }
         }
     }
 }
