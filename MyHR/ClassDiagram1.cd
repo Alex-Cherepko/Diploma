@@ -1,0 +1,597 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MyHR.App">
+    <Position X="35.5" Y="10.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>App.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.ConnectionToDB" Collapsed="true">
+    <Position X="55.25" Y="5.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>IAAABAAAAAEAAACAAAAAAAAAACAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>BDModels\Base\ConnectionToDB.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.DataBaseInitializer">
+    <Position X="52.5" Y="8.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BDModels\Base\DataBaseInitializer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.EntityContext" Collapsed="true">
+    <Position X="52.5" Y="5.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>QAEAAAAAAAAAiAAgAAAAAAAAAAAAAgAAAAAIAAAAAAA=</HashCode>
+      <FileName>BDModels\Base\EntityContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.Order">
+    <Position X="52.5" Y="11.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAEAAAAAgAAAAAgAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BDModels\Order.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.Order_Vacancy">
+    <Position X="58" Y="10.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>EAEAAAAAAAAAAAAACAAAAAAAAQAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>BDModels\Order_Vacancy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.Orders_CandidateForm">
+    <Position X="58" Y="8.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>MAFAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BDModels\Orders_CandidateForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.Position">
+    <Position X="52.5" Y="9.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAgAAQAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BDModels\Position.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.Vacancy">
+    <Position X="55.25" Y="8.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAgAAAgAAQAAACAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>BDModels\Vacancy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.Сandidate">
+    <Position X="55.25" Y="10.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAEAAAgAIAAAAAgAAQABAAAAAAAAAAAAAAAEAI=</HashCode>
+      <FileName>BDModels\Сandidate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.СandidateForm" Collapsed="true">
+    <Position X="58" Y="5.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>JAAAAAAEAAAgCgAACAAgAAAAAAAAAAAAAAAABAAAAAI=</HashCode>
+      <FileName>BDModels\СandidateForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.AdaptationPanel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="35.5" Y="12" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controls\AdaptationPanel.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyHR.BaseControl&lt;VM&gt;" Collapsed="true">
+    <Position X="41.25" Y="11" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Controls\BaseControl\BaseControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.OpenPageItemControl" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="38.5" Y="14" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controls\OpenPages\OpenPageItemControl.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyHR.OpenPageListControl" BaseTypeListCollapsed="true">
+    <Position X="32.5" Y="10.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controls\OpenPages\OpenPageListControl.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyHR.StaffRecruitmentPanel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="41.25" Y="13" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controls\StaffRecruitmentPanel.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyHR.DataLogger" Collapsed="true">
+    <Position X="38.5" Y="12" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>DataModels\DataLogger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.MainWindow" BaseTypeListCollapsed="true">
+    <Position X="29.75" Y="18" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyHR.NewOrderPage" BaseTypeListCollapsed="true">
+    <Position X="27" Y="10.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Pages\Order\NewOrderPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyHR.OrderPage" BaseTypeListCollapsed="true">
+    <Position X="29.75" Y="10.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Pages\Order\OrderPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyHR.NewPositionPage" BaseTypeListCollapsed="true">
+    <Position X="27" Y="12" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Pages\Position\NewPositionPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyHR.PositionPage" BaseTypeListCollapsed="true">
+    <Position X="29.75" Y="12" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Pages\Position\PositionPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyHR.SelectPositionPage" BaseTypeListCollapsed="true">
+    <Position X="32.5" Y="12" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Pages\Position\SelectPositionPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyHR.NewVacancyPage" BaseTypeListCollapsed="true">
+    <Position X="27" Y="13.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Pages\Vacancy\NewVacancyPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyHR.SelectVacancyPage" BaseTypeListCollapsed="true">
+    <Position X="32.5" Y="13.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Pages\Vacancy\SelectVacancyPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyHR.VacancyPage" BaseTypeListCollapsed="true">
+    <Position X="29.75" Y="13.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Pages\Vacancy\VacancyPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyHR.NewСandidatePage" BaseTypeListCollapsed="true">
+    <Position X="27" Y="16.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Pages\Сandidate\NewСandidatePage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyHR.SelectСandidatePage" BaseTypeListCollapsed="true">
+    <Position X="32.5" Y="16.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Pages\Сandidate\SelectСandidatePage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyHR.СandidatePage" BaseTypeListCollapsed="true">
+    <Position X="29.75" Y="16.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Pages\Сandidate\СandidatePage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyHR.NewСandidateFormPage" BaseTypeListCollapsed="true">
+    <Position X="27" Y="15" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Pages\СandidateForm\NewСandidateFormPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyHR.SelectСandidateFormPage" BaseTypeListCollapsed="true">
+    <Position X="32.5" Y="15" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Pages\СandidateForm\SelectСandidateFormPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyHR.СandidateFormPage" BaseTypeListCollapsed="true">
+    <Position X="29.75" Y="15" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Pages\СandidateForm\СandidateFormPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyHR.SettingsWindow" BaseTypeListCollapsed="true">
+    <Position X="27" Y="18" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SettingsWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyHR.ApplicatoinUserControlValueConverter" Collapsed="true">
+    <Position X="33.75" Y="6.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ValueConverters\ApplicatoinUserControlValueConverter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.BaseValueConverter&lt;T&gt;" Collapsed="true">
+    <Position X="35.5" Y="5.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAQIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ValueConverters\Base\BaseValueConverter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MyHR.BooleanToVisiblityConverter" Collapsed="true">
+    <Position X="37" Y="6.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ValueConverters\BooleanToVisiblityConverter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.BaseViewModel" Collapsed="true">
+    <Position X="7" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAIAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>VeiwModel\Base\BaseViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MyHR.PropertyChangeModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="35.5" Y="15" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAABCAAAAAAAAEAAAEAAAAgBAAAAAAAAAAA=</HashCode>
+      <FileName>VeiwModel\Base\PropertyChangeModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyHR.RelayCommand" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="38.5" Y="15" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAQAAEAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>VeiwModel\Base\RelayCommand.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyHR.RelayParameterizedCommand" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="41.25" Y="15" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAQAAEAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>VeiwModel\Base\RelayParameterizedCommand.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyHR.SettingsWindowViewModel">
+    <Position X="18.5" Y="2" Width="2.5" />
+    <NestedTypes>
+      <Class Name="MyHR.SettingsWindowViewModel.ConnectionAttributes" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>VeiwModel\MainWindow\SettingsWindowViewModel.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAABAAIAAAAAICAAAAAkAAQACAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>VeiwModel\MainWindow\SettingsWindowViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.WindowViewModel">
+    <Position X="18.5" Y="5.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AwkACCEAFogABAABABEAQEEAiAAAAAIAgIACgAQGBAY=</HashCode>
+      <FileName>VeiwModel\MainWindow\WindowViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.NewOrderPageViewModel">
+    <Position X="1" Y="1.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>kCACACAEAAIACkAASAQAEAAAAKgAAAARAACAgIJAEAA=</HashCode>
+      <FileName>VeiwModel\Order\NewOrderPageViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.OrderPageViewModel">
+    <Position X="1" Y="9.25" Width="2.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="MyHR.OrderPageViewModel.DataOrderList" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>VeiwModel\Order\OrderPageViewModel.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>gAASAAAAAAIACCIAQAAAAAAAAoEgAIACgEAggAAAAAA=</HashCode>
+      <FileName>VeiwModel\Order\OrderPageViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.OrderStatusViewModel">
+    <Position X="4.25" Y="9.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>VeiwModel\Order\OrderStatusViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.OrderStatus" Collapsed="true">
+    <Position X="27" Y="19.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>VeiwModel\Order\OrderStatusViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.OpenPageItemViewModel">
+    <Position X="4.25" Y="2" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAQAAAAACAEAAgBAAAAAAEAAAAAAAAAAgAAAAAI=</HashCode>
+      <FileName>VeiwModel\Page\OpenPageItemViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.OpenPageListViewModel">
+    <Position X="4.25" Y="6" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>QIBEAAQAAIAAAAAABAAAAAAAAAAEAAAQQAAAAAAAAAA=</HashCode>
+      <FileName>VeiwModel\Page\OpenPageListViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.NewPositionPageViewModel">
+    <Position X="7" Y="2" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAACAEAAIACEAASAQAEAQAACiAAAAAAAAAgAAAAgA=</HashCode>
+      <FileName>VeiwModel\Position\NewPositionPageViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.PositionPageViewModel">
+    <Position X="7" Y="7" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AhAQAEAAAAIACiIAQAAQAAAACgEAAAACAAACgAABgAA=</HashCode>
+      <FileName>VeiwModel\Position\PositionPageViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.UserControlViewModel">
+    <Position X="18.5" Y="14.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAkAQAAAACBAAAAAAoAAAAAAAAAECAAAAAAAiAAABAA=</HashCode>
+      <FileName>VeiwModel\UserControl\UserControlViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.NewVacancyPageViewModel">
+    <Position X="10.25" Y="2" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAACAEAAIgCEAgSAQQEAQACCiAAACAAAAAhIAAAAA=</HashCode>
+      <FileName>VeiwModel\Vacancy\NewVacancyPageViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.VacancyPageViewModel">
+    <Position X="10.25" Y="8.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>ABAQAAIABAIAiCIAQAAYAgAAAgEAAAACAAABgIAAAAA=</HashCode>
+      <FileName>VeiwModel\Vacancy\VacancyPageViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.CondidateStatusViewModel">
+    <Position X="15.75" Y="14.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAg=</HashCode>
+      <FileName>VeiwModel\Сandidate\CandidateStatusViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.CondidateStatus" Collapsed="true">
+    <Position X="49.5" Y="4.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>VeiwModel\Сandidate\CandidateStatusViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.NewСandidatePageViewModel">
+    <Position X="15.75" Y="2" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>gACAACAEAAIgCMAASAQQEAQABCgAAAABAAAAgAAAEAI=</HashCode>
+      <FileName>VeiwModel\Сandidate\NewСandidatePageViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.СandidatePageViewModel">
+    <Position X="15.75" Y="9" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>gAAQAAAAEAIgCCIAQBABAAAAAgEAAAADCAAAgAAAQEA=</HashCode>
+      <FileName>VeiwModel\Сandidate\СandidatePageViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.CondidateFormStatusViewModel">
+    <Position X="13" Y="15" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAg=</HashCode>
+      <FileName>VeiwModel\СandidateForm\CondidateFormStatusViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.CondidateFormStatus" Collapsed="true">
+    <Position X="38.25" Y="5.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>VeiwModel\СandidateForm\CondidateFormStatusViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.NewСandidateFormPageViewModel">
+    <Position X="13" Y="2" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>pAAAACBEAAIgCkAASBQAGAAAACgAAAAQAAAAgIAAAAI=</HashCode>
+      <FileName>VeiwModel\СandidateForm\NewСandidateFormPageViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.СandidateFormPageViewModel">
+    <Position X="13" Y="9.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>gAAQAAAAEAIgCCIAQAAAAAAAAgEAAAADCAAAgAJAQEA=</HashCode>
+      <FileName>VeiwModel\СandidateForm\СandidateFormPageViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.WindowResizer" Collapsed="true">
+    <Position X="41.25" Y="12" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAIQEAAAAQAACAIBAIEAEAAIACAAAACAIAAAAAAA=</HashCode>
+      <FileName>Window\WindowResizer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.MONITORINFO" Collapsed="true">
+    <Position X="38.5" Y="13" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAEAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAACAAAA=</HashCode>
+      <FileName>Window\WindowResizer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.Properties.Resources" Collapsed="true">
+    <Position X="38.5" Y="11" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyHR.Properties.Settings" Collapsed="true">
+    <Position X="49.5" Y="6.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="MyHR.Rectangle" Collapsed="true">
+    <Position X="49.5" Y="6" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAIAAAACACAAAAAAAA=</HashCode>
+      <FileName>Window\WindowResizer.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="MyHR.MINMAXINFO" Collapsed="true">
+    <Position X="35.5" Y="13" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQBAAAAAAACAAAIAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Window\WindowResizer.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="MyHR.POINT" Collapsed="true">
+    <Position X="41.25" Y="14" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAA=</HashCode>
+      <FileName>Window\WindowResizer.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="MyHR.IMessageBus" Collapsed="true">
+    <Position X="49.5" Y="5.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAABCAAAAAAAAEAAAEAAAAgBAAAAAAAAAAA=</HashCode>
+      <FileName>Interface\IMessageBus.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="MyHR.ApplicationMenuControl" Collapsed="true">
+    <Position X="41.25" Y="5.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>BAEAIEAAAAAgAAAgCAABAAAACICAAAAAAAABAIAAAAE=</HashCode>
+      <FileName>DataModels\ApplicationMenuControl.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyHR.ApplicationPage" Collapsed="true">
+    <Position X="44" Y="6" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>DataModels\ApplicationPage.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyHR.ApplicationPageCommands" Collapsed="true">
+    <Position X="44" Y="5.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAgEAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>DataModels\ApplicationPageCommands.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyHR.ApplicationUserControl" Collapsed="true">
+    <Position X="46.75" Y="5.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>DataModels\ApplicationUserControl.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyHR.WindowDockPosition" Collapsed="true">
+    <Position X="41.25" Y="6" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAACACAAAAAAAA=</HashCode>
+      <FileName>Window\WindowResizer.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyHR.MonitorOptions" Collapsed="true">
+    <Position X="46.75" Y="6" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAIAQAAAAAAAA=</HashCode>
+      <FileName>Window\WindowResizer.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="MyHR.ValueChangedHandler" Collapsed="true">
+    <Position X="41.25" Y="7.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQCAAABAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Interface\IMessageBus.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="MyHR.ClosePageHandler">
+    <Position X="44" Y="6.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interface\IMessageBus.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="MyHR.ChagePageHandler" Collapsed="true">
+    <Position X="41.25" Y="6.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interface\IMessageBus.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="MyHR.SendValueHandler">
+    <Position X="46.75" Y="6.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Interface\IMessageBus.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

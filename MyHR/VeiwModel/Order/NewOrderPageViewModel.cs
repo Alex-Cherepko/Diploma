@@ -221,7 +221,11 @@ namespace MyHR
                 MessageBox.Show("Укажите вакансию кандидата", "Ошибка");
                 return false;
             }
-
+            if (ExecutionTerm == null)
+            {
+                MessageBox.Show("Укажите срок исполнения", "Ошибка");
+                return false;
+            }
             return true;
         }
 

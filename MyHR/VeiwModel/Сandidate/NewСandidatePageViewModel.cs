@@ -176,7 +176,11 @@ namespace MyHR
                 MessageBox.Show("Укажите наименование кандидата", "Ошибка");
                 return false;
             }
-
+            if (BrdDate == null)
+            {
+                MessageBox.Show("Укажите дату рождения кандидата", "Ошибка");
+                return false;
+            }
             return true;
         }
 

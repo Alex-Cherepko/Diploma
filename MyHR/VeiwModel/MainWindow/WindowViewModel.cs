@@ -177,44 +177,7 @@ namespace MyHR
         /// </summary>
         public WindowViewModel(Window window, PropertyChangeModel propertyChangeModel)
         {
-            
 
-            //if (!Directory.Exists("C:\\ProgramData\\MyHR"))
-            //{
-            //    Directory.CreateDirectory("C:\\ProgramData\\MyHR");
-            //    Logger.WriteToLog(@"Создан каталог: C:\ProgramData\MyHR " + DateTime.Now.ToString());
-            //}
-
-            //try
-            //{
-            //    using (EntityContext context = new EntityContext("ConnectionToDB"))
-            //    {
-            //        Logger.WriteToLog(@"Получен контекст базы данных " + DateTime.Now.ToString());
-            //        if (Database.Exists(@"ConnectionToDB"))
-            //        {
-            //            Logger.WriteToLog(@"Прошел процесс инициализации базы данных " + DateTime.Now.ToString());
-            //        }
-            //        else
-            //        {
-            //            context.Database.Initialize(false);
-                        
-            //        }
-                    
-            //    }
-            //}
-            //catch(Exception e)
-            //{
-            //    Logger.WriteToLog(@"Не удалось создать контекст базы данных " + DateTime.Now.ToString());
-            //    Logger.WriteToLog(@"Параметры подключения к базе данных: ");
-            //    Logger.WriteToLog(@"connectionString = data source = (localdb)\MSSQLLocalDB; AttachDbFilename = C:\ProgramData\MyHR\MyHR.mdf; Integrated Security = True;");
-            //    Logger.WriteToLog(@"providerName = System.Data.SqlClient");
-            //    Logger.WriteToLog(@"defaultConnectionFactory type = System.Data.Entity.Infrastructure.LocalDbConnectionFactory, EntityFramework");
-            //    Logger.WriteToLog(@"parameter value = mssqllocaldb");
-            //    Logger.WriteToLog(@"provider invariantName = System.Data.SqlClient type = System.Data.Entity.SqlServer.SqlProviderServices, EntityFramework.SqlServer");
-            //    Logger.WriteToLog(e.Message);
-            //    MessageBox.Show(@"Не удалось установить соединение с базой данных");
-
-            //}
             mPropertyChangeModel = propertyChangeModel;
             mPropertyChangeModel.ValueChanged += PropertyChangeModelValueChanged;
             mPropertyChangeModel.ClosePageIvent += PropertyChangeModelClosePage;

@@ -36,9 +36,6 @@ namespace MyHR
             //}
         }
 
-        //private bool NotExistConnectionString()
-        //{
-        //    return false;
-        //}
+        
     }
 }
